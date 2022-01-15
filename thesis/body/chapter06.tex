@@ -1,0 +1,65 @@
+% !TEX encoding = UTF-8 Unicode
+%%==================================================
+%% thanks.tex for SJTU Bachelor Thesis
+%% version: 0.5.2
+%% Encoding: UTF-8
+%%==================================================
+
+\chapter{Conslusion}
+\label{chap:conclusion}
+
+In this chapter we summarize all contents above of this thesis and 
+draw some conclusions on the stock return series prediction work we have done.
+
+Up to now,
+we have formally introduced the hidden Markov model (HMM) in Ch.\,\ref{chap:HMM},
+including the model formulation and important statistics, 
+model estimation methods, and ways to perform forecasts and decoding.
+As a simple dynamic Bayesian network,
+HMM is easy to be realized, 
+and it excavates the information not only about the stock returns themselves 
+but also the classifications of them.
+which enables us to analyze the data from the angles of points and also intervals.
+The number of model parameters in under control of the number of hidden states,
+at the level of $\co(N^2)$ ($N$ represents the number of states),
+which is usually small in empirical analysis.
+From these perspectives, 
+HMM is quite suitable to apply for stock return series analysis and prediction,
+due to its easy implementation, appropriate complexity and small number of parameters.
+
+In Ch.\,\ref{chap:system} we have constructed the stock return series prediction system,
+which combines model initialization with K-Means,
+model estimation, historical analysis (with HMM global decoding) and visualization.
+The system is adaptive to different data populations 
+(w.r.t.\,target index, time horizon, observation frequency, etc.) and 
+exogenous parameters (e.g.\,the number of hidden states).
+It is also complete, encapsulated and user-friendly 
+(see Appendix \ref{app:code} for the user manuscript and source codes).
+
+In Ch.\,\ref{chap:positive} we have carried out empirical analysis on 
+both U.S. (the S\&P 500 Index) and Chinese (the CSI300 Index) stock markets.
+With some modest assumptions,
+the system has been well functioning for all the analysis.
+From the perspective of prediction correctness,
+the system is effective and always has a win ratio greater than 50\%,
+and sometimes approaches 60\% under certain circumstances.
+We can also draw the conclusion that data populations with higher observation frequencies
+tend to outperform those with lower frequencies in this system
+due to the difference in the amount of information contained in the data.
+From the view of global decoding,
+we come up to the conclusion that data populations with longer time horizon 
+(i.e.\,longer observation period)
+tend to have (better) global decoding results that more fit our usual acknowledgements.
+Potential for improvement of the HMM-based system lies in 
+the incorporation of resampling or sample reweighting,
+which shall largely ameliorate the time lag effect.
+This part will be briefly introduced in Ch.\,\ref{chap:future}.
+
+To sum up,
+we have successfully constructed the HMM-based stock return series prediction system
+and have accomplished all the aims of this thesis.
+We want to reinstate that this thesis in aimed to fulfill a complete implementation
+of stock return prediction with HMM,
+while we have no intention to realize the improvements of model-level techniques.
+Finally note that the model is imperfect and there exist many unaddressed issues.
+We cover some of them in the last chapter and hope to incorporate such improvements in future works.

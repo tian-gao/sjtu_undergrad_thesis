@@ -1,0 +1,145 @@
+% !TEX encoding = UTF-8 Unicode
+\documentclass[10pt, aspectratio=149]{beamer}
+
+% Beamer Packages
+\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+\graphicspath{{figs/}}
+\usepackage{array, booktabs}
+\usepackage{subfigure}
+%\usepackage[scale=2]{ccicons}
+%\usepackage{pgfplots}
+%\usepgfplotslibrary{dateplot}
+
+% Math
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{eucal}
+\usepackage{bm}
+
+\usefonttheme[onlymath]{serif}
+
+% Calligraphic Fonts 
+\newcommand{\ca}{{\cal A}}
+\newcommand{\cb}{{\cal B}}
+\newcommand{\cc}{{\cal C}}
+\newcommand{\cd}{{\cal D}}
+\newcommand{\ce}{{\cal E}}
+\newcommand{\cf}{{\cal F}}
+\newcommand{\ch}{{\cal H}}
+\newcommand{\cl}{{\cal L}}
+\newcommand{\cm}{{\cal M}}
+\newcommand{\co}{{\cal O}}
+\newcommand{\cp}{{\cal P}}
+\newcommand{\ct}{{\cal T}}
+\newcommand{\cz}{{\cal Z}}
+
+% Bold Fonts
+\newcommand{\one}{{\mathbf{1}^{\prime}}}
+\newcommand{\bu}{{\mathbf u}}
+\newcommand{\bx}{{\mathbf x}}
+\newcommand{\bX}{{\mathbf X}}
+\newcommand{\bn}{{\mathbf N}}
+\newcommand{\bo}{{\mathbf O}}
+\newcommand{\bp}{{\mathbf P}}
+\newcommand{\br}{{\mathbf R}}
+\newcommand{\bs}{{\mathbf s}}
+\newcommand{\bS}{{\mathbf S}}
+\newcommand{\bz}{{\mathbf Z}}
+\newcommand{\balpha}{{\boldsymbol\alpha}}
+\newcommand{\bbeta}{{\boldsymbol\beta}}
+\newcommand{\bdelta}{{\boldsymbol\delta}}
+\newcommand{\bpi}{{\boldsymbol\pi}}
+\newcommand{\bmu}{{\boldsymbol\mu}}
+\newcommand{\bsigma}{{\boldsymbol\sigma}}
+\newcommand{\btheta}{{\boldsymbol\theta}}
+\newcommand{\bGamma}{{\boldsymbol\Gamma}}
+
+% Hollow Fonts
+\newcommand{\expe}{{\mathbb E}}
+\newcommand{\hn}{{\mathbb N}}
+\newcommand{\bbt}{{\mathbb T}}
+\newcommand{\hs}{{\mathbb S}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\LRa}{\Longrightarrow}
+\newcommand{\LLa}{\Longleftarrow}
+
+% Operators
+\DeclareMathOperator*{\argmax}{argmax}
+\newcommand{\ov}{\overline}
+\providecommand{\abs}[1]{\lvert#1\rvert}
+\providecommand{\norm}[1]{\lVert#1\rVert}
+\providecommand{\prob}[1]{\mathbb{P}(#1)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Prediction of stock return series with \\ hidden Markov models}
+%\subtitle{A modern beamer theme}
+\date{June 9, 2016}
+\author{\normalsize{Tian Gao}}
+\institute{
+    Supervised by Associate Professor Jianzhong Lin \\
+    School of Mathematical Sciences \\
+    Shanghai Jiao Tong University}
+\titlegraphic{\vspace{3.7cm}\hspace{8.5cm}\includegraphics[height=2.8cm]{sjtubadge.pdf}}
+%\logo{\vspace{-0.97cm}\includegraphics[height=0.5cm]{sjtubanner.pdf}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Table of Contents}
+	\setbeamertemplate{section in toc}[sections numbered]
+	\tableofcontents[hideallsubsections]
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{body/part1_intro}
+\input{body/part2_hmm}
+\input{body/part3_system}
+\input{body/part4_empirical}
+\input{body/part5_summary}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\section*{\large Appendix}
+\input{app/appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks,t]{References}
+	\bibliographystyle{GBT7714-2005NLang}
+	\bibliography{ref/ref}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[standout]
+	Questions?
+\end{frame}
+
+\begin{frame}[standout]
+	Thanks for your time!
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

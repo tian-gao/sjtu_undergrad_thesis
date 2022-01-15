@@ -1,0 +1,415 @@
+% !TEX encoding = UTF-8 Unicode
+\chapter{Model Realization Python Codes}
+\label{app:code}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{User manuscript}
+\label{sec:code:manuscript}
+All Python source codes for model realization are included in this appendix.
+In this section we provide a brief instruction to these code files,
+including the functionalities and how to run the codes,
+after slight changes on file paths if needed.
+
+Sec.\,\ref{sec:code:main} (\texttt{hmmMain.py}) is the main part of the model realization part,
+which strictly follows the system we describe in Ch.\,\ref{chap:system}.
+Sec.\,\ref{sec:code:class} (\texttt{hmmClass.py}) defines the Python class \texttt{HMM},
+which is an encapsulated class object for the hidden Markov model.
+Data members and member functions related to the model estimation are created within
+(e.g.\,the observations, transition matrix, conditional distribution parameters, etc.).
+One can find detailed information about the object in the introduction part of \texttt{hmmClass.py}.
+
+Before running the \texttt{hmmMain.py} program,
+make sure that \texttt{hmmClass.py} is under the same path of the main program.
+In order to change the paths for data loading and results saving,
+the user can modify the paths wherever \texttt{.from\_csv} and \texttt{.to\_csv} occur
+and make the adjustments.
+After certain changes, 
+one can directly run \texttt{hmmMain.py} in an appropriate Python IDE.
+
+Sec.\,\ref{sec:code:states} (\texttt{hmmStates.py}) is independent from the main program
+and also requires (imports) the class definition module.
+The program is intended to estimate the goodness of fitness of different models
+with diverse number of hidden states,
+which generates the results presented in Sec.\,\ref{sec:positive:result:states}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\begin{spacing}{1.2}
+\section{hmmMain.py}
+\label{sec:code:main}
+\begin{lstlisting}
+# # # Graduation Thesis - Main
+#
+# The project is intended to construct a complete system for stock returns
+# series prediction based on Hidden Markov Model. This program is the main 
+# part of the project, realizing all aims of the empirical analysis part 
+# along with other source code files.
+#
+# Source file lists
+#   - hmmMain.py  : main part of the program
+#   - hmmClass.py : include construction of the model, in the form of class
+#   - hmmStates.py: a separate program to find the optimal number of hidden
+#                   states
+#
+# Data files are import from .csv files and results will be stored in .csv
+# format as well. Visualization analysis and presentation of the data will
+# be realized in other programs.
+ 
+# # # # # Program Starts Here # # # # #
+
+## Library Import
+import numpy as np
+import pandas as pd
+from math import sqrt
+from sklearn.cluster import KMeans
+from hmmClass import HMM
+
+## Data Loading
+dataYear = ''
+dataFreq = 'daily'
+dataFreqMin = 240
+#dataFile = '/SP500Data_' + dataFreq + dataYear + '.csv'
+dataFile = '/CSI300Data_' + dataFreq + dataYear + '.csv'
+dataRaw = pd.DataFrame.from_csv(dataFreq + dataFile,index_col = False)
+dataRet = pd.DataFrame({'ret': np.diff(np.log(dataRaw['close'])),
+                        'time': dataRaw['time'][1:]})
+                        
+## In-sample & Out-of-sample Definition
+numMin = 240 / dataFreqMin
+numDay = len(dataRaw) / numMin
+numStdDay = 5
+lenInSample = int((numDay - numStdDay)*2/3)
+lenOutSample = numDay - lenInSample - numStdDay
+dataRetIn = dataRet.ix[0:(lenInSample + numStdDay)*numMin-1].copy()
+dataRetIn.ix[:,'std'] = 0.0
+for k in range(numStdDay*numMin,(lenInSample + numStdDay)*numMin):
+    dataRetIn.ix[k,'std'] = np.std(dataRetIn.ix[(k-numStdDay*numMin):(k-1),
+                                                'ret'])
+dataRetIn = dataRetIn.tail(lenInSample*numMin)
+
+## K-Means Clustering
+# K-Means is used to find the initial probability distribution of the three
+# states and corresponding conditional distribution parameters. 
+# The parameters are used for HMM initialization.
+numState = 3
+label = ['bear','intermediate','bull']
+modelKMeans = KMeans(n_clusters = numState).fit(dataRetIn[['ret','std']])
+order = np.argsort(modelKMeans.cluster_centers_.T[0,:])
+matParam = modelKMeans.cluster_centers_.T[:,order]
+dataRetIn['label'] = ''
+for k in range(0,len(dataRetIn)):
+    dataRetIn.ix[dataRetIn.index[k],'label'] = label[np.where(order == modelKMeans.labels_[k])[0]]
+matInit = np.array((dataRetIn['label'].value_counts())[label]/\
+          len(dataRetIn))
+matTrans = np.ones([numState,numState])/numState
+dataRetIn.to_csv(dataFreq + '/dataReturnInSample' + dataYear + '.csv',
+    index = False,encoding='utf-8',columns=['time','ret','std','label'])
+dataRetIn.to_csv(dataFreq + '/dataPredict' + dataYear + '.csv',
+    index = False,encoding='utf-8',columns=['time','ret','std'])
+
+## Entire Period Estimation
+dataRet = dataRet.ix[numStdDay*numMin:,]
+model = HMM(dataRet,matTrans,matParam,matInit)
+model.EM()
+model.viterbi()
+dataRet['label'] = ''
+for k in range(0,len(dataRet)):
+    dataRet.ix[dataRet.index[k],'label'] = label[int(model.matState[k])]
+dataRet.to_csv(dataFreq + '/dataHistory' + dataYear + '.csv',
+    index = False,encoding = 'utf-8',columns = ['time','ret','label'])
+
+## Initialization
+dataPredict = pd.DataFrame({'time':dataRet['time'],'ret':0.0,'std':0.0},
+                            index = dataRet.index)
+seqTrans = pd.DataFrame({'x11':0.0,'x12':0.0,'x13':0.0,
+                         'x21':0.0,'x22':0.0,'x23':0.0,
+                         'x31':0.0,'x32':0.0,'x33':0.0},
+                         index = dataRet.index)
+seqParam = pd.DataFrame({'mu1':0.0,'mu2':0.0,'mu3':0.0,
+                         'sigma1':0.0,'sigma2':0.0,'sigma3':0.0},
+                         index = dataRet.index)
+seqParam.ix[(lenInSample+numStdDay)*numMin-1,] = \
+    matParam.reshape(1,2*numState)
+                         
+## Estimation & Prediction
+print 'HMM Loop starts now!'
+for k in range(0,lenOutSample*numMin):
+    print dataRet.ix[(lenInSample+numStdDay)*numMin+k,'time']
+    model = HMM(dataRet.ix[:(lenInSample+numStdDay)*numMin+k-1],
+                matTrans,matParam,matInit)
+    model.EM()
+    seqTrans.ix[(lenInSample+numStdDay)*numMin+k,] = model.matTrans.reshape(1,model.numState**2)
+    seqParam.ix[(lenInSample+numStdDay)*numMin+k,] = model.matParam.reshape(1,2*model.numState)
+    dataPredict.ix[(lenInSample+numStdDay)*numMin+k,'ret'] = model.matEnd.dot(model.matTrans).dot(model.matParam[0,])
+    dataPredict.ix[(lenInSample+numStdDay)*numMin+k,'std'] = sqrt(((model.matEnd.dot(model.matTrans))**2).dot(model.matParam[1,]**2))
+    pd.DataFrame(dataPredict.ix[(lenInSample+numStdDay)*numMin+k]).T.\
+        to_csv(dataFreq + '/dataPredict' + dataYear + '.csv',mode = 'a',
+        index = False,encoding = 'utf-8',
+        header = False,columns = ['time','ret','std'])
+
+seqTrans['time'] = dataRet['time']
+seqParam['time'] = dataRet['time']
+seqTrans.to_csv(dataFreq + '/matTrans' + dataYear + '.csv',
+                index = False,encoding = 'utf-8',
+                columns = ['time','x11','x12','x13',
+                                  'x21','x22','x23',
+                                  'x31','x32','x33'])
+seqParam.to_csv(dataFreq + '/matParam' + dataYear + '.csv',
+                index = False,encoding = 'utf-8',
+                columns = list(['time']) + list(np.core.defchararray.add(list(np.repeat('mu',3)),map(str,range(1,4)))) \
+                + list(np.core.defchararray.add(list(np.repeat('sigma',3)),map(str,range(1,4)))))
+\end{lstlisting}
+\newpage
+
+\section{hmmClass.py}
+\label{sec:code:class}
+\begin{lstlisting}
+# # # Graduation Thesis - HMM Class Definition
+#
+# This program include the construction of a HMM class. The members are 
+# listed as follows:
+#
+# Member Data:
+#   - obs: the observed sequence/time series
+#   - numState: the number of hidden states
+#   - matInit: the original probability distribution of hidden states
+#   - matTrans: the state transition probability matrix
+#   - matParam: the conditional distribution parameters of the observed 
+#               sequence, corresponding to each hidden state
+#   - matDist: the probability distribution matrix, corresponding to each 
+#              observation at each state
+#   - matEnd: the probability distribution of hidden states at the last 
+#             observation
+#
+# Member Functions:
+#   - __init__: built-in initialization function of the class
+#   - forward: calculates the forward probability of observed sequence
+#   - backward: calculates the backward probability of observed sequence
+#   - expState: calculates the expectation of states
+#   - expStateTrans: calculates the expected state transition probability
+#   - EM: the major part of HMM parameter (including state transition 
+#         probabilities, conditional distribution parameter, initial and 
+#         final state distribution) estimation using Baum-Welch algorithm
+#   - viterbi: global decoding to find the most probable sequence of 
+#              hidden states using Viterbi algorithm
+
+# # # # # Program Starts Here # # # # #
+import numpy as np
+import pandas as pd
+from matplotlib.mlab import *
+
+class HMM:
+    def __init__(self,seqObserv,matTrans,matParam,matInit):
+        '''HMM is the class defined to hold necessary data and functions 
+        for a standard hidden Markov model. The initialization of a HMM 
+        class requires 4 inputs given in the parameter list.
+        
+        Parameters
+        ----------
+        seqObserv : a data frame holding the stock return series
+        matTrans : the initial state transition probability matrix
+        matParam : the initial conditional distribution parameters 
+                   corresponding to each hidden state
+        matInit : the initial probability distribution of hidden states'''
+        self.obs = seqObserv['ret'].copy()
+        self.matTrans = matTrans.copy()
+        self.matInit = matInit.copy()
+        self.numState = matTrans.shape[0]
+        self.matParam = matParam.copy()
+        self.matDist = np.zeros([self.matTrans.shape[0],len(self.obs)])
+        matDistTemp = pd.DataFrame(index = self.obs.index)
+        for k in range(0,self.matTrans.shape[0]):
+            matDistTemp['x' + str(k)] = normpdf(self.obs,self.matParam[0,k],self.matParam[1,k])
+        self.matDist = np.array(matDistTemp.T)
+    
+    def forward(self):
+        T = len(self.obs)
+        alpha = np.zeros([self.numState,T])
+        scale = np.zeros(T)
+        alpha[:,0] = self.matInit[:] * self.matDist[:,0]
+        scale[0] = np.sum(alpha[:,0])
+        alpha[:,0] /= scale[0]
+        for t in range(1,T):
+            if np.sum(self.matDist[:,t]) != 0:
+                alpha[:,t] = np.dot(alpha[:,t-1].T,self.matTrans).T *\
+                             self.matDist[:,t]
+                scale[t] = np.sum(alpha[:,t])
+                alpha[:,t] /= scale[t]
+            else:
+                alpha[:,t] = alpha[:,t-1]
+                scale[t] = scale[t-1] 
+        logp = np.sum(np.log(scale[:]))
+        return alpha, scale, logp
+        
+    def backward(self,scale):
+        T = len(self.obs)
+        beta = np.zeros([self.numState,T])
+        beta[:,T-1] = 1/scale[T-1]
+        for t in range(T-1,0,-1):
+            beta[:,t-1] = np.dot(self.matTrans,
+                                 (self.matDist[:,t]*beta[:,t]))
+            beta[:,t-1] /= scale[t-1]
+        return beta
+        
+    def expState(self,alpha,beta):
+        gamma = np.zeros(alpha.shape)
+        gamma = alpha[:,:] * beta[:,:]
+        gamma = gamma / ((np.sum(gamma,0) == 0) + np.sum(gamma,0))
+        return gamma
+        
+    def expStateTrans(self,alpha,beta):
+        T = len(self.obs)
+        xi = np.zeros((self.numState,self.numState,T-1))   
+        for t in range(T-1):
+            denom = np.dot(np.dot(alpha[:,t].T, self.matTrans) * \
+                    self.matDist[:,t+1].T,beta[:,t+1])
+            for i in range(self.numState):
+                numer = alpha[i,t] * self.matTrans[i,:] * \
+                        self.matDist[:,t+1].T * beta[:,t+1].T
+                xi[i,:,t] = numer / (denom + (denom == 0))
+        return xi
+        
+    def EM(self):
+        T = len(self.obs)
+        criterion = 0.001
+        alpha, scale, logp = self.forward()
+        beta = self.backward(scale)            
+        gamma = self.expState(alpha,beta)    
+        xi = self.expStateTrans(alpha,beta)
+        matDistTemp = self.matDist
+        loop = 0
+        while True:
+            for i in range(0,self.numState):
+                denominator = np.sum(gamma[i,0:T-1])
+                for j in range(0,self.numState): 
+                    numerator = np.sum(xi[i,j,0:T-1])
+                    self.matTrans[i,j] = numerator / \
+                                    (denominator + (denominator == 0))
+            
+            tempMu = np.array([np.sum(gamma*np.array(self.obs.T),1)/np.sum(gamma,1)])
+            tempSigma = np.sqrt(np.array([np.sum(gamma*(np.array(self.obs.T) - tempMu.T)**2,1) / np.sum(gamma,1)]))
+            self.matParam[0,:] = tempMu
+            self.matParam[1,:] = tempSigma
+            matDistTemp = pd.DataFrame(index = self.obs.index)
+            for k in range(0,self.matTrans.shape[0]):
+                matDistTemp['x' + str(k)] = normpdf(self.obs,self.matParam[0,k],self.matParam[1,k])
+            matDistTemp = np.array(matDistTemp.T)
+            
+            self.matDist = matDistTemp
+            self.matInit = gamma[:,0]
+            self.matEnd = gamma[:,-1]
+            
+            alpha, scale, logpNew = self.forward()
+            beta = self.backward(scale)            
+            gamma = self.expState(alpha,beta)    
+            xi = self.expStateTrans(alpha,beta)
+            
+            delta = abs(logpNew - logp)
+            logp = logpNew
+            loop += 1
+            if delta <= criterion:
+                break
+        
+        self.valAIC = -2*logp + 2*(self.numState**2 + 2*self.numState - 1)
+        self.valBIC = -2*logp + \
+                      np.log(T)*(self.numState**2 + 2*self.numState - 1)
+                
+    def viterbi(self):
+        T = len(self.obs)
+        psi = np.zeros([self.numState,T])
+        delta = np.zeros([self.numState,T])
+        matState = np.zeros(T)
+        temp = np.zeros([self.numState,self.numState])
+
+        delta[:,0] = np.log(self.matInit) + np.log(self.matDist[:,0])
+        for t in range(1,T):
+            temp = (delta[:,t-1] + np.log(self.matTrans.T)).T
+            ind = np.argmax(temp, axis = 0)
+            psi[:,t] = ind
+            delta[:,t] = np.log(self.matDist[:,t]) + \
+                         temp[ind,range(self.numState)]
+        
+        max_ind = np.argmax(delta[:,T-1])
+        matState[T-1] = max_ind
+        for t in reversed(range(0,T-1)):
+            matState[t] = psi[matState[t+1],t+1] 
+        
+        self.logProbState = delta[:,T-1][max_ind]
+        self.matState = matState    
+\end{lstlisting}
+\newpage
+
+\section{hmmStates.py}
+\label{sec:code:states}
+\begin{lstlisting}
+# # # Graduation Thesis - Number of States 
+#
+# This program is very similar to the main one, except that is elminates 
+# the part of prediction and focuses on evaluating the goodness of fit of 
+# models with different number of hidden states. Notice that the analysis 
+# is performed only for CSI300 daily data.
+#
+# Data files are import from .csv files and results will be stored in .csv
+# format as well.
+ 
+# # # # # Program Starts Here # # # # #
+
+## Library Import
+import numpy as np
+import pandas as pd
+from sklearn.cluster import KMeans
+from hmmClass import HMM
+
+## Data Loading
+dataPath = 'states'
+dataPathMin = 240
+dataRaw = pd.DataFrame.from_csv('daily/CSI300Data_daily.csv',
+                                index_col = False)
+dataRet = pd.DataFrame({'ret': np.diff(np.log(dataRaw['close'])),
+                        'time': dataRaw['time'][1:]})
+                        
+## In-sample & Out-of-sample Definition
+numMin = 240 / dataPathMin
+numDay = len(dataRaw) / numMin
+numStdDay = 5
+lenInSample = int((numDay - numStdDay)*2/3)
+lenOutSample = numDay - lenInSample - numStdDay
+dataRetIn = dataRet.ix[0:(lenInSample + numStdDay)*numMin-1].copy()
+dataRetIn.ix[:,'std'] = 0.0
+for k in range(numStdDay*numMin,(lenInSample + numStdDay)*numMin):
+    dataRetIn.ix[k,'std'] = np.std(dataRetIn.ix[(k-numStdDay*numMin):(k-1),
+                                                'ret'])
+dataRetIn = dataRetIn.tail(lenInSample*numMin)
+
+## Loop for Different Number of States
+seqAIC = pd.DataFrame({'number':range(2,7),'value':0},index = range(2,7))
+seqBIC = pd.DataFrame({'number':range(2,7),'value':0},index = range(2,7))
+
+for numState in range(2,7):
+    print 'Number of States:', numState
+    ## K-Means Clustering
+    label = range(0,numState)
+    modelKMeans = KMeans(n_clusters = numState).\
+                         fit(dataRetIn[['ret','std']])
+    order = np.argsort(modelKMeans.cluster_centers_.T[0,:])
+    matParam = modelKMeans.cluster_centers_.T[:,order]
+    dataRetIn['label'] = ''
+    for k in range(0,len(dataRetIn)):
+        dataRetIn.ix[dataRetIn.index[k],'label'] = label[np.where(order == modelKMeans.labels_[k])[0]]
+    matInit = np.array((dataRetIn['label'].value_counts())[label]/\
+            len(dataRetIn))
+    matTrans = np.ones([numState,numState])/numState
+    
+    ## Entire Period Estimation
+    dataRet = dataRet.ix[numStdDay*numMin:,]
+    model = HMM(dataRet,matTrans,matParam,matInit)
+    model.EM()
+    seqAIC.ix[numState,'value'] = model.valAIC
+    seqBIC.ix[numState,'value'] = model.valBIC
+    
+seqAIC.to_csv(dataPath + '/aic.csv',index = False,encoding = 'utf-8')
+seqBIC.to_csv(dataPath + '/bic.csv',index = False,encoding = 'utf-8')
+\end{lstlisting}
+\end{spacing}

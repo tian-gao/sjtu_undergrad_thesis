@@ -1,0 +1,59 @@
+%%==================================================
+%% bigabstract.tex for SJTU Bachelor Thesis
+%% version: 0.5.2
+%% Encoding: UTF-8
+%%==================================================
+
+\begin{bigabstract}
+
+In the area of quantitative finance,
+research and analysis on stock return series is one of the most concentrated topics 
+shared by both the industry and the academia.
+Conditional on different market states,
+the distributions of stock returns vary largely,
+and the hidden Markov model is able to quantitatively depict the state-dependency of stock returns.
+
+This thesis is intended to implement the hidden Markov model to 
+analyze and describe the hidden states of stock markets,
+from which to deduce the conditional distributions of the returns,
+and carry out stock return series prediction based on the model.
+
+In this thesis, 
+we provide analyses and explanations with details on the model.
+Formal definition and formulation of a hidden Markov is provided,
+followed by the derivation of marginal distributions and other primary statistics.
+We introduce the forward and backward procedure and 
+expectation maximization algorithm for model parameters estimation,
+after which forecast distributions are also covered.
+In order to excavate information about the historical hidden states,
+the concepts of state probabilities, local decoding and global decoding are introduced,
+and we use the Viterbi algorithm to conduct global decoding for the hidden Markov model.
+
+Based on this theoretical model and some other related knowledge and techniques,
+we construct a complete stock return series prediction system.
+We achieve the aim of prediction through three steps,
+model initialization with K-Means clustering,
+model estimation with expectation maximization algorithm,
+and iterative one-step forecasts for the out-of-sample data.
+The task of model realization is accomplished through Python programming.
+
+We then use the realized system to perform empirical analysis and model validation 
+on the CSI 300 Index from Chinese stock market and the S\&P 500 Index from the U.S. stock market.
+After making appropriate assumptions and conjectures,
+we in order analyze the S\&P 500 daily return data, CSI 300 daily data,
+and CSI 300 medium frequency (60min and 10min) data.
+Thorough analyses and comparions are carried out and numerical results are provided,
+along with presentations of results visualization.
+
+Additionally, we provide further discussions on unaddressed issues remained 
+in the model construction part and empirical analysis part,
+including the time lag effect and model estimations for other more general hidden Markov models.
+To ameliorate the time lag effect we propose two potential solutions,
+which are adopting rolling windows for sample data censoring and 
+a data reweighting algorithm named exponantially weighted expectation maximization.
+For more general hidden Markov models,
+we restate the problem formulation and provide the derivations of some key statistics.
+The particle filter method is also introduced as a standard tool for model estimation.
+We hope to solve these remaining problems and further our research on the model in future works.
+
+\end{bigabstract}

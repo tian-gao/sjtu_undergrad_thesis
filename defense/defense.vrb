@@ -1,0 +1,16 @@
+\frametitle{Full Presentation of CSI 300 Results Visualization}
+\begin{figure}[!hbt]
+\center
+\hspace*{-0.45cm}
+\subfigure[Simulated prediction result]
+    {\includegraphics[width=0.44\textwidth]{daily/predictionFig2.pdf}}
+\hspace{1cm}
+\subfigure[Adaptive prediction result]
+    {\includegraphics[width=0.44\textwidth]{daily/predictionFig4.pdf}}
+\subfigure[Simulated prediction with confidence band]
+    {\includegraphics[width=0.45\textwidth]{daily/predictionFig3.pdf}\hspace*{0.5cm}}
+\subfigure[Adaptive prediction with confidence band]
+    {\hspace*{0.5cm}\includegraphics[width=0.45\textwidth]{daily/predictionFig5.pdf}}
+\caption{Simulated prediction results}
+\label{fig:app:daily:prediction}
+\end{figure}

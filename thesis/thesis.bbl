@@ -1,0 +1,361 @@
+\begin{thebibliography}{56}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Whittle(1951)]{Whittle:1951hy}
+\textsc{Whittle P}.
+\newblock
+\newblock Hypothesis testing in time series analysis[M],
+\newblock  Vol. 4.[S.l.]: Almqvist \& Wiksells, 1951.
+
+\bibitem[Wikipedia(2016){\natexlab{a}}]{wiki:mixture}
+\textsc{Wikipedia}.
+\newblock
+\newblock Mixture model --- Wikipedia{,} The Free Encyclopedia[R].[S.l.]:
+  [s.n.] , 2016{\natexlab{a}}.
+\newblock
+  \url{https://en.wikipedia.org/w/index.php?title=Mixture_model&oldid=718940784}.
+
+\bibitem[Behboodian(1970)]{Behboodian:1970hh}
+\textsc{Behboodian J}.
+\newblock {On the Modes of a Mixture of Two Normal Distributions}[J].
+\newblock Technometrics, 1970, 12(1):131--139.
+
+\bibitem[Hasselblad(1969)]{Hasselblad:1969bk}
+\textsc{Hasselblad V}.
+\newblock {Estimation of Finite Mixtures of Distributions from the Exponential
+  Family}[J].
+\newblock Journal of the American Statistical Association, 1969,
+  64(328):1459--1471.
+
+\bibitem[Zucchini and MacDonald(2009)]{Zucchini:2009df}
+\textsc{Zucchini W, MacDonald I~L}.
+\newblock
+\newblock {Hidden Markov models for time series}[M],
+\newblock Monographs on Statistics and Applied Probability, vol. 110.[S.l.]:
+  CRC Press, Boca Raton, FL, 2009.
+
+\bibitem[McLachlan and Peel(2004)]{Mclachlan:2004fi}
+\textsc{McLachlan G, Peel D}.
+\newblock
+\newblock
+\newblock Finite mixture models[M].[S.l.]: John Wiley \& Sons, 2004.
+
+\bibitem[Fr{\"u}hwirth-Schnatter(2006)]{Fruhwirth:2006fi}
+\textsc{Fr{\"u}hwirth-Schnatter S}.
+\newblock
+\newblock
+\newblock Finite mixture and Markov switching models[M].[S.l.]: Springer
+  Science \& Business Media, 2006.
+
+\bibitem[Wikipedia(2016){\natexlab{b}}]{wiki:markov}
+\textsc{Wikipedia}.
+\newblock
+\newblock Markov chain --- Wikipedia{,} The Free Encyclopedia[R].[S.l.]: [s.n.]
+  , 2016{\natexlab{b}}.
+\newblock
+  \url{https://en.wikipedia.org/w/index.php?title=Markov_chain&oldid=718668115}.
+
+\bibitem[Kemeny et al.(1960)]{Kemeny:1960mc}
+\textsc{Kemeny J~G, Snell J~L}, et al.
+\newblock
+\newblock Finite markov chains[M],
+\newblock  Vol. 356.[S.l.]: van Nostrand Princeton, NJ, 1960.
+
+\bibitem[Meyn and Tweedie(2012)]{Meyn2012:mc}
+\textsc{Meyn S~P, Tweedie R~L}.
+\newblock
+\newblock
+\newblock Markov chains and stochastic stability[M].[S.l.]: Springer Science \&
+  Business Media, 2012.
+
+\bibitem[MacQueen(1967)]{Macqueen:1967uv}
+\textsc{MacQueen J}.
+\newblock
+\newblock
+\newblock {Some methods for classification and analysis of multivariate
+  observations}[M]//Proc. Fifth Berkeley Sympos. Math. Statist. and Probability
+  (Berkeley, Calif., 1965/66).[S.l.]: Univ. California Press, Berkeley, Calif.,
+  1967:Vol. I: Statistics, pp. 281--297.
+
+\bibitem[Forgy(1965)]{Forgy:1965cl}
+\textsc{Forgy E~W}.
+\newblock Cluster analysis of multivariate data: efficiency versus
+  interpretability of classifications[J].
+\newblock Biometrics, 1965, 21:768--769.
+
+\bibitem[Hartigan(1975)]{Hartigan:1975cl}
+\textsc{Hartigan J~A}.
+\newblock
+\newblock
+\newblock Clustering algorithms[M].[S.l.]: John Wiley \& Sons, 1975.
+
+\bibitem[Cont(2001)]{Cont:2001gv}
+\textsc{Cont R}.
+\newblock {Empirical properties of asset returns: stylized facts and
+  statistical issues}[J].
+\newblock Quantitative Finance, 2001, 1(2):223--236.
+
+\bibitem[Babu et al.(2012)]{Babu:2012wl}
+\textsc{Babu M~S, Geethanjali N, Satyanarayana B}.
+\newblock {Clustering Approach to Stock Market Prediction}[J].
+\newblock International Journal of Advanced Networking and Applications, 2012,
+  3(4):1281--1291.
+
+\bibitem[Gupta and Sharma(2014)]{Gupta:2014tp}
+\textsc{Gupta A, Sharma S~D}.
+\newblock {Clustering-Classification Based Prediction of Stock Market Future
+  Prediction}[J].
+\newblock IJCSIT) International Journal of Computer Science {\ldots}, 2014.
+
+\bibitem[Rabiner and Juang(1986)]{Rabiner:1986jk}
+\textsc{Rabiner L, Juang B}.
+\newblock {An introduction to hidden Markov models}[J].
+\newblock IEEE ASSP Magazine, 1986, 3(1):4--16.
+
+\bibitem[Ephraim and Merhav(2002)]{Ephraim:2002ju}
+\textsc{Ephraim Y, Merhav N}.
+\newblock {Hidden Markov processes}[J].
+\newblock Institute of Electrical and Electronics Engineers. Transactions on
+  Information Theory, 2002, 48(6):1518--1569.
+
+\bibitem[Leroux and Puterman(1992)]{Leroux:1992ma}
+\textsc{Leroux B~G, Puterman M~L}.
+\newblock Maximum-penalized-likelihood estimation for independent and
+  Markov-dependent mixture models[J].
+\newblock Biometrics, 1992:545--558.
+
+\bibitem[Haas et al.(2004)]{Haas:2004ek}
+\textsc{Haas M, Mittnik S, Paolella M~S}.
+\newblock {A new approach to Markov-switching GARCH models}[J].
+\newblock Journal of Financial {\ldots}, 2004.
+
+\bibitem[Stratonovich(1960)]{Stratonovich:1960vh}
+\textsc{Stratonovich R~L}.
+\newblock {Conditional markov processes}[J].
+\newblock Theory of Probability {\&} Its Applications, 1960, 5(2):156--178.
+
+\bibitem[Wikipedia(2016){\natexlab{c}}]{wiki:hmm}
+\textsc{Wikipedia}.
+\newblock
+\newblock Hidden Markov model --- Wikipedia{,} The Free Encyclopedia[R].[S.l.]:
+  [s.n.] , 2016{\natexlab{c}}.
+\newblock
+  \url{https://en.wikipedia.org/w/index.php?title=Hidden_Markov_model&oldid=716209275}.
+
+\bibitem[Rabiner(1989)]{Rabiner:1989hs}
+\textsc{Rabiner L~R}.
+\newblock {A tutorial on hidden Markov models and selected applications in
+  speech recognition}[J].
+\newblock Proceedings of the IEEE, 1989, 77(2):257--286.
+
+\bibitem[Ghassempour et al.(2014)]{Ghassempour:2014ew}
+\textsc{Ghassempour S, Girosi F, Maeder A}.
+\newblock {Clustering Multivariate Time Series Using Hidden Markov Models}[J].
+\newblock International Journal of Environmental Research and Public Health,
+  2014, 11(3):2741--2763.
+
+\bibitem[Baum and Petrie(1966)]{Baum:1966cy}
+\textsc{Baum L~E, Petrie T}.
+\newblock {Statistical inference for probabilistic functions of finite state
+  Markov chains}[J].
+\newblock Annals of Mathematical Statistics, 1966, 37(6):1554--1563.
+
+\bibitem[Baum and Eagon(1967)]{Baum:1967gs}
+\textsc{Baum L~E, Eagon J~A}.
+\newblock {An inequality with applications to statistical estimation for
+  probabilistic functions of Markov processes and to a model for ecology}[J].
+\newblock Bulletin of the American Mathematical Society, 1967, 73(3):360--363.
+
+\bibitem[Baum et al.(1970)]{Baum:1970do}
+\textsc{Baum L~E, Petrie T, Soules G}, et al.
+\newblock {A maximization technique occurring in the statistical analysis of
+  probabilistic functions of Markov chains}[J].
+\newblock Annals of Mathematical Statistics, 1970, 41(1):164--171.
+
+\bibitem[Fredkin and Rice(1992)]{Fredkin:1992ba}
+\textsc{Fredkin D~R, Rice J~A}.
+\newblock Bayesian restoration of single-channel patch clamp recordings[J].
+\newblock Biometrics, 1992:427--448.
+
+\bibitem[Viterbi(1967)]{Viterbi:1967hq}
+\textsc{Viterbi A}.
+\newblock {Error bounds for convolutional codes and an asymptotically optimum
+  decoding algorithm}[J].
+\newblock Institute of Electrical and Electronics Engineers. Transactions on
+  Information Theory, 1967, 13(2):260--269.
+
+\bibitem[Beckers and Rixen(2003)]{Beckers:2003do}
+\textsc{Beckers J~M, Rixen M}.
+\newblock {EOF calculations and data filling from incomplete oceanographic
+  datasets}[J].
+\newblock Journal of Atmospheric and Oceanic Technology, 2003,
+  20(12):1839--1856.
+
+\bibitem[Reuter et al.(2007)]{Reuter:2007cv}
+\textsc{Reuter H~I, Nelson A, Jarvis A}.
+\newblock {An evaluation of void-filling interpolation methods for SRTM
+  data}[J].
+\newblock International Journal of Geographical Information Science, 2007,
+  21(9):983--1008.
+
+\bibitem[Brailovskiy and Herman(2014)]{Brailovskiy:2014wu}
+\textsc{Brailovskiy L, Herman M}.
+\newblock
+\newblock {Prediction of Financial Time Series Using Hidden Markov
+  Models}[C]//2014 ASE BIGDATA/SOCIALCOM/CYBERSECURITY Conference.
+\newblock .[S.l.]: [s.n.] , 2014.
+
+\bibitem[Hassan and Nath(2005)]{Hassan:2005uw}
+\textsc{Hassan M~R, Nath B}.
+\newblock {Stock market forecasting using hidden Markov model: a new
+  approach}[J].
+\newblock {\ldots} Design and Applications, 2005.
+
+\bibitem[Hassan et al.(2007)]{Hassan:2007hk}
+\textsc{Hassan M~R, Nath B, Kirley M}.
+\newblock {A fusion model of HMM, ANN and GA for stock market forecasting}[J].
+\newblock Expert Systems with Applications, 2007, 33(1):171--180.
+
+\bibitem[Gupta and Dhingra(2012)]{Gupta:2012gm}
+\textsc{Gupta A, Dhingra B}.
+\newblock
+\newblock
+\newblock {Stock market prediction using Hidden Markov Models}[C]//2012
+  Students Conference on Engineering and Systems (SCES).[S.l.]: IEEE,
+  2012:1--4.
+
+\bibitem[Wasson and Hartemink(2009)]{Wasson:2009dh}
+\textsc{Wasson T, Hartemink A~J}.
+\newblock {An ensemble model of competitive multi-factor binding of the
+  genome}[J].
+\newblock Genome Research, 2009, 19(11):2101--2112.
+
+\bibitem[Bengio et al.(1992)]{Bengio:1992ke}
+\textsc{Bengio Y, De~Mori R, Flammia G}, et al.
+\newblock {Global optimization of a neural network-hidden Markov model
+  hybrid}[J].
+\newblock IEEE Transactions on Neural Networks, 1992, 3(2):252--259.
+
+\bibitem[Tipping and Bishop(1999)]{Tipping:1999db}
+\textsc{Tipping M~E, Bishop C~M}.
+\newblock {Mixtures of Probabilistic Principal Component Analyzers}[J].
+\newblock Neural Computation, 1999, 11(2):443--482.
+
+\bibitem[Dias et al.(2015)]{Dias:2015ky}
+\textsc{Dias J~G, Vermunt J~K, Ramos S}.
+\newblock {Clustering financial time series: New insights from an extended
+  hidden Markov model}[J].
+\newblock European Journal of Operational Research, 2015, 243(3):852--864.
+
+\bibitem[Creal(2012)]{Creal:2012ct}
+\textsc{Creal D}.
+\newblock {A Survey of Sequential Monte Carlo Methods for Economics and
+  Finance}[J].
+\newblock Econometric Reviews, 2012, 31(3):245--296.
+
+\bibitem[Kon(1984)]{Kon:1984ih}
+\textsc{Kon S~J}.
+\newblock {Models of Stock Returns--A Comparison}[J].
+\newblock The Journal of Finance, 1984, 39(1):147--165.
+
+\bibitem[Nystrup et al.(2015)]{Nystrup:2015ic}
+\textsc{Nystrup P, Madsen H, Lindstr{\"o}m E}.
+\newblock {Stylised facts of financial time series and hidden Markov models in
+  continuous time}[J].
+\newblock Quantitative Finance, 2015.
+
+\bibitem[Jacob(2015)]{Jacob:2015um}
+\textsc{Jacob P~E}.
+\newblock {Sequential Bayesian inference for implicit hidden Markov models and
+  current limitations}[J].
+\newblock arXiv.org, 2015.
+
+\bibitem[Zhang(2004)]{Zhang:2005tp}
+\textsc{Zhang Y}.
+\newblock {Prediction of financial time series with Hidden Markov Models}[J].
+\newblock 2004.
+
+\bibitem[Wikipedia(2016){\natexlab{d}}]{wiki:PF}
+\textsc{Wikipedia}.
+\newblock
+\newblock Particle filter --- Wikipedia{,} The Free Encyclopedia[R].[S.l.]:
+  [s.n.] , 2016{\natexlab{d}}.
+\newblock
+  \url{https://en.wikipedia.org/w/index.php?title=Particle_filter&oldid=717665870}.
+\newblock [Online; accessed 9-May-2016].
+
+\bibitem[Del~Moral(1997)]{DelMoral:1997dp}
+\textsc{Del~Moral P}.
+\newblock {Nonlinear filtering: Interacting particle resolution}[J].
+\newblock Comptes Rendus De L Academie Des Sciences Serie I-Mathematique, 1997,
+  325(6):653--658.
+
+\bibitem[Liu and Chen(1998)]{Liu:1998fp}
+\textsc{Liu J~S, Chen R}.
+\newblock {Sequential Monte Carlo methods for dynamic systems}[J].
+\newblock Journal of the American Statistical Association, 1998,
+  93(443):1032--1044.
+
+\bibitem[Kahn and Marshall(1953)]{Kahn:1953me}
+\textsc{Kahn H, Marshall A~W}.
+\newblock Methods of reducing sample size in Monte Carlo computations[J].
+\newblock Journal of the Operations Research Society of America, 1953,
+  1(5):263--278.
+
+\bibitem[Marshall(1954)]{Marshall:1954us}
+\textsc{Marshall A~W}.
+\newblock The use of multistage sampling schemes in Monte Carlo
+  computations[J].
+\newblock 1954.
+
+\bibitem[Richard and Zhang(2007)]{Richard:2007gz}
+\textsc{Richard J~F, Zhang W}.
+\newblock {Efficient high-dimensional importance sampling}[J].
+\newblock Journal of Econometrics, 2007, 141(2):1385--1411.
+
+\bibitem[Rubinstein and Kroese(2013)]{Rubinstein:2013ce}
+\textsc{Rubinstein R~Y, Kroese D~P}.
+\newblock
+\newblock
+\newblock The cross-entropy method: a unified approach to combinatorial
+  optimization, Monte-Carlo simulation and machine learning[M].[S.l.]: Springer
+  Science \& Business Media, 2013.
+
+\bibitem[Gao and Li(2016)]{Gao:2015vv}
+\textsc{Gao T, Li J}.
+\newblock {A Derivative-Free Trust-Region Method for Reliability-Based
+  Optimizations}[J].
+\newblock arXiv.org, 2016.
+
+\bibitem[Rubin(1987)]{Rubin:1987co}
+\textsc{Rubin D~B}.
+\newblock Comment: A noniterative Sampling/Importance Resampling alternative to
+  the data augmentation algorithm for creating a few imputations when fractions
+  of missing information are modest: The SIR algorithm[J].
+\newblock Journal of the American Statistical Association, 1987,
+  82(398):542--543.
+
+\bibitem[Gordon et al.(1993)]{Gordon:1993up}
+\textsc{Gordon N~J, Salmond D~J, Smith A~F~M}.
+\newblock {Novel approach to nonlinear/non-Gaussian Bayesian state
+  estimation}[J].
+\newblock Radar and Signal Processing, IEE Proceedings F, 1993,
+  140(2):107--113.
+
+\bibitem[Toni et al.(2009)]{Toni:2009abc}
+\textsc{Toni T, Welch D, Strelkowa N}, et al.
+\newblock Approximate Bayesian computation scheme for parameter inference and
+  model selection in dynamical systems[J].
+\newblock Journal of the Royal Society Interface, 2009, 6(31):187--202.
+
+\bibitem[Dean et al.(2014)]{Dean:2014pe}
+\textsc{Dean T~A, Singh S~S, Jasra A}, et al.
+\newblock Parameter estimation for hidden Markov models with intractable
+  likelihoods[J].
+\newblock Scandinavian Journal of Statistics, 2014, 41(4):970--987.
+
+\end{thebibliography}

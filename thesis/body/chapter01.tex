@@ -1,0 +1,243 @@
+% !TEX encoding = UTF-8 Unicode
+%%==================================================
+%% thanks.tex for SJTU Bachelor Thesis
+%% version: 0.5.2
+%% Encoding: UTF-8
+%%==================================================
+
+\chapter{Introduction}
+\label{chap:introduction}
+We introduce the brief history and status quo of stock return series analysis and prediction
+in the very first chapter of this thesis.
+The topic has received heated discussion since the invention of exchange traded stocks.
+In Sec.\,\ref{sec:introduction:timeseries} and \ref{sec:introduction:technique}
+we briefly introduce the elementary concepts about financial time series and stock returns,
+and some mature and standard techniques for time series analysis.
+In Sec.\,\ref{sec:introduction:background} we introduce the novel hidden Markov model,
+and explain the background and aims of this thesis.
+Then in Sec.\,\ref{sec:introduction:organization} we show the framework of the thesis,
+and list the notations, abbreviations and jargons that are used in the following chapters
+for the reader's convenience.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Financial time series and stock returns}
+\label{sec:introduction:timeseries}
+A time series, by definition, 
+is a sequence of data points that are recorded with a timeline.
+The observations can be made either over a continuous interval or at discrete time nodes;
+either regularly spaced or irregularly spaced.
+A financial time series is a special kind of time series of which
+observations are prices of financial assets like bonds, stocks or stock indices. 
+
+Of all kinds of financial markets,
+stock market is the most volatile and popular one.
+Analysis on stocks has been carried out since the very first day 
+when exchange traded stocks were invented.
+In this work we focus our research on the stock markets;
+more specifically, 
+the CSI 300 index in the Chinese market and the S\&P 500 index in the U.S. market,
+which are weighted average of the most 300/500 stocks in the corresponding markets 
+and considered to be the best indicators of the markets.
+
+One of the most important and fundamental indicators of 
+evaluating the performance of a financial asset is its return.
+Mathematically, the return $r$ of a stock at time $t$ is defined as
+		\begin{equation}
+		\label{eq:return}
+		r_t = \frac{P_{t} - P_{t-1}}{P_{t-1}} = \frac{P_{t}}{P_{t-1}} - 1,
+		\end{equation}
+where $P_t$ stands for the price of the stock at time $t$.
+Eq.\,\ref{eq:return} is also known as the simple return of a stock.
+For a $k$-period financial time series,
+the return at the end of the period is calculated cumulatively by the returns during the period
+		\begin{equation}
+		\label{eq:return_k}
+		\begin{aligned}
+		r_t(k) & = \frac{P_{t} - P_{t-k}}{P_{t-k}} \\
+		& = (1 + r_{t-k+1})(1 + r_{t-k+2})\cdots(1 + r_{t}) - 1 \\
+		& = \prod_{i=t-k+1}^{t}(1 + r_i) - 1.
+		\end{aligned}
+		\end{equation}
+In order to make the computations more easy and elegant,
+the log return has been introduced and the equations above can be transformed into the follows:
+		\begin{subequations}
+		\begin{align}
+		\label{eq:logreturn}
+		R_t & = \log\frac{P_{t}}{P_{t-1}}, \\ 
+		\label{eq:logreturn_k}
+		R_t[k] & = \log\frac{P_{t}}{P_{t-k}} = 
+			\log\frac{P_{t}}{P_{t-1}}\cdot\frac{P_{t-1}}{P_{t-2}}
+			\cdot\cdots\cdot\frac{P_{t-k+1}}{P_{t-k}} = 
+			\sum_{i=t-k}^{t} R_i.
+		\end{align}
+		\end{subequations}
+Eq.\,\ref{eq:logreturn} is the definition of log return and 
+Eq.\,\ref{eq:logreturn_k} implements the additivity of logarithm.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Traditional time series analysis techniques}
+\label{sec:introduction:technique}
+Time series analysis can be dated far back to early the last century,
+for different goals in different research areas.
+
+In terms of researched domain, 
+time series analysis can be divided into frequeny-domain analysis and time-domain analysis;
+the former includes spectral analysis and wavelet analysis, etc., 
+while the latter is composed mainly of correlation analyses.
+In terms of statistical method,
+the models are further classified as parametric, semi-parametric and non-parametric.
+With respect to the observed variable(s) the models can be divided into 
+linear and nonlinear, univariate and multivariate. 
+
+In 1951, Peter Whittle introduced the autoregressive–moving-average (ARMA) model in \cite{Whittle:1951hy},
+and the method is popularized by George E.\,P.~Box and Gwilym Jenkins.
+Later the model was developed to consider integrated time series and derived 
+the autoregressive integrated moving average (ARIMA) model and 
+autoregressive fractionally integrated moving average (ARFIMA) model.
+Extension of the models to deal with multi-variables, 
+i.e.\,vector-valued variables,
+is then called the vector autoregression (VAR) model.
+Models related to heteroskedasticity of the time series were also developed,
+the most famous two being autoregressive conditional heteroskedasticity (ARCH) model
+and generalized autoregressive conditional heteroskedasticity (GARCH) model.
+
+With development of Bayesian statistics,
+a kind of models named dynamic Bayesian network has been built for time series analysis,
+of which the simplest one is called hidden Markov model (HMM).
+HMM is a statistical Markov model,
+where there is an observed time series and 
+an underlying series that is assumed to be an Markov chain with unobserved (hidden/latent) states.
+This thesis is concentrated on the very model.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Background and aims}
+\label{sec:introduction:background}
+In 1982, a private hedge fund investment company named Renaissance Technologies 
+was founded in New York by Dr.\,James H. Simons,
+who is also a mathematician well-known in the area of pattern recognition.
+Employment of plenty of mathematicians and statisticians and
+widely applications of statistical models to quantitative finance,
+these elements help Renaissance become one of the most successful investment companies.
+The most famous fund of the company is the Medallion fund,
+and word is that the core model implemented in Medallion's quantitative investment strategies is the HMM.
+With great interest in the model itself and admiration to Dr.\,Simons,
+the author decided to study the HMM and try to figure out the secret to the success of Renaissance.
+
+Despite that it is almost impossible to reproduce the investment strategies based on HMM,
+we can perform thorough financial time series analysis with the model,
+and construct a complete stock return series prediction system on top of the analysis results.
+Therefore, we aim to build such a system,
+in which we shall apply the hidden Markov model.
+We hope to achieve this goal by three sub-aims:
+		\begin{itemize}
+		\item \textbf{Aim 1.} \\
+		Construct the entire system for stock return series prediction. 
+		The system should include data pre-processing, model construction and estimation, 
+		and eventually predictions with detailed analysis.
+		\item \textbf{Aim 2.} \\
+		Estimate the HMM parameters in order to calibrate the model with accessible market data.
+		\item \textbf{Aim 3.} \\
+		Carry out empirical analysis on both Chinese and U.S. stock markets. 
+		Verify the effectiveness of the prediction system and provide detailed analysis and comparisons.
+		\end{itemize}
+Finally, we hope to realize the system with Python programming with
+each module encapsulated and flexible for different data and parameters.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Thesis organization}
+\label{sec:introduction:organization}
+This thesis is composed of seven chapters and two appendices.
+
+In Ch.\,\ref{chap:preliminary} we introduce some prerequisite
+knowledge and models that will be later used in HMM introduction or system construction.
+Ch.\,\ref{chap:HMM} formally introduce the hidden Markov model,
+including model formulation, some key concepts and related algorithms.
+Then with knowledge of the model, 
+we show construction of the full stock return series prediction system in Ch.\,\ref{chap:system},
+and then conduct empirical analysis with the system in Ch.\,\ref{chap:positive},
+on both Chinese CSI 300 index and U.S. S\&P 500 index.
+The Python codes for model realization are provided in Appendix \ref{app:code} 
+along with a short user manuscript.
+Part of the visualization results that are not presented in Ch.\,\ref{chap:positive} 
+are then listed in Appendix \ref{app:fig}.
+Ch.\,\ref{chap:conclusion} concludes the thesis,
+and in Ch.\,\ref{chap:future} we make brief discussions on some remaining issues 
+and thoughts for future works.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Notations, abbreviations and jargons}
+\label{sec:introduction:notation}
+We list some notations and Greek letters that are used in this thesis for reference,
+see Table \ref{table:notations}.
+The symbols appear mainly in Ch.\,\ref{chap:HMM}.
+Some abbreviations are also included in the table.
+        \begin{table}[!hbt]
+        \center
+        \caption{Notations and abbreviations}
+        \label{table:notations}
+        \begin{tabular}{c p{25em}}
+        \hline
+        \multicolumn{1}{c}{Notations/Abbreviations}	&	\multicolumn{1}{c}{Meanings}	\\	
+        \hline
+		$S_t$	&	the latent variable (hidden state) at time $t$	\\	
+		$s_t$	&	the value of $S_t$	\\	
+		$\bS^{(t)},\bS^{(t+1:T)}$	&	the vector $(S_1,S_2,\dots,S_t)$ and $(S_{t+1},\dots,S_{T})$ 	\\	
+		$\bs^{(t)},\bs^{(t+1:T)}$	&	the value vetor of $\bS^{(t)}$ and $\bS^{(t+1:T)}$	\\	
+		$X_t$	&	the observed variable at time $t$	\\	
+		$x_t$	&	the value of $X_t$	\\	
+		$\bX^{(t)},\bX^{(t+1:T)}$	&	the vector $(X_1,X_2,\dots,X_t)$ and $(X_{t+1},\dots,X_{T})$ 	\\	
+		$\bx^{(t)},\bx^{(t+1:T)}$	&	the value vetor of $\bX^{(t)}$ and $\bX^{(t+1:T)}$	\\	
+		$\delta_i(t)$	&	the probability of state $i$ at time $t$	\\	
+		$\bdelta(t)$	&	the probability distribution of states at time $t$	\\	
+		$\bGamma$	&	the Markov state transition matrix	\\	
+		$\gamma_{ij}$	&	the element at the $i^{th}$ row and $j^{th}$ column of $\bGamma$	\\	
+		$\bpi$	&	the initial distribution of the states	\\	
+		$\balpha_t$	&	the row vector of forward probabilities at time $t$	\\	
+		$\bbeta_t$	&	the row vector of backward probabilities at time $t$	\\	
+		$\xi_{ti}$	&	the joint probability of state $i$ at time $t$	\\	
+		$\prob{\cdot}$	&	the probability function	\\	
+		$E(\cdot)$	&	the expectation function	\\	
+		w.r.t.	&	with respect to	\\	
+		iff	&	if and only if	\\	
+		PDF & 	probability density function	\\
+		PMF & 	probability mass function	\\
+		CDF & 	cumulative distribution function	\\
+		Ch.	&	Chapter	\\	
+		Sec.	&	Section (including subsections and subsubsections)	\\	
+		Def.	&	Definition	\\
+		Thm.	&	Theorem	\\	
+		Prop.	&	Proposition	\\	
+		Cor.	&	Corollary	\\
+		Illus.	&	Illustration	\\	
+		Eq.	&	Equation	\\	
+        \hline
+        \end{tabular}
+        \end{table}
+
+There are some terms that may be linguistically ambiguous 
+for readers unfamiliar with the financial industry.
+Here we specify some terms that are used multiple times but may represent different things.
+
+By \textbf{state transition matrix}, we refer to the state transition probability matrix
+of a Markov process.
+
+By \textbf{conditional distribution}, we refer to the state-dependent distribution of 
+the observed variable, depending on the context,
+or simply refer to a conditional probability distribution.
+
+By \textbf{bear}, we mean the so-called bearish market or bear market for most of the time,
+and sometimes it refers to the name of the corresponding state 
+in K-Means clustering of the hidden Markov model.
+Similar cases are for \textbf{intermediate} and \textbf{bull}.
+
+By \textbf{rebounce}, we mean the reversion of a market trend.
+It can either refer to the rally after a period of fall,
+or the plunge following the rise.
+
+By \textbf{prediction}, we refer to the stock return prediction and also
+the forecast step in a Markov chain of HMM.

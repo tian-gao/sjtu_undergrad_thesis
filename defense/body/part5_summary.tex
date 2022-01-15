@@ -1,0 +1,51 @@
+% !TEX encoding = UTF-8 Unicode
+
+\section{\large Summary}
+
+%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Conclusion}
+
+\begin{frame}[fragile,t]{Conclusion}
+	\begin{block}{For the System}
+    \begin{itemize}
+    \item The system is complete, encapsulated and user-friendly.
+    \item The system performs well in adaptive predictions, 
+    	all actual returns fall in the $95.45\%$ confidence interval.
+    \item Time lag effects exist, so sample reweighting is necessary to improve the performance.
+    \end{itemize}
+    \end{block}
+    
+    \begin{block}{For Empirical Analyses}
+    \begin{itemize}
+    \item Data populations with longer observation periods tend to 
+    	provide more accurate hidden states anlysis results then short-term data.
+    \item Data populations with higher observation frequencies
+		tend to outperform those with lower frequencies w.r.t.\,prediction.
+    \end{itemize}
+    \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Future Work}
+
+\begin{frame}[fragile,t]{Future Work}
+	\begin{block}{Time Lag Effects}
+    \begin{itemize}
+    \item \textbf{Rolling window method}, more popular in the industry,
+    	the size of the window should be optimized.
+    \item \textbf{Exponential weighted expectation maximization (EWEM) algorithm},
+    	proposed in \cite{Zhang:2005tp}, more complex to implement.
+    \end{itemize}
+    \end{block}
+    
+    \begin{block}{Particle Filter}
+    \begin{itemize}
+    \item Standard tool for HMM estimation when the latent variable is continuous,
+    	one of the most famous cases being Kalman filter.
+    \item PF can incorporates economic meanings into values of the latent variable while currently 
+    	we only consider the hidden states as categorical.
+    \end{itemize}
+    \end{block}
+\end{frame}

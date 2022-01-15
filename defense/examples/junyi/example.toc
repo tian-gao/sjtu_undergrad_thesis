@@ -1,0 +1,18 @@
+\beamer@endinputifotherversion {3.26pt}
+\beamer@sectionintoc {1}{Single Family Loan-Level Dataset}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Data Structure}{3}{0}{1}
+\beamer@sectionintoc {2}{Cox Proportional Hazard Model}{7}{0}{2}
+\beamer@sectionintoc {3}{Transformation Model}{8}{0}{3}
+\beamer@subsectionintoc {3}{1}{General class of models}{8}{0}{3}
+\beamer@subsectionintoc {3}{2}{Han's MRC estimator}{11}{0}{3}
+\beamer@subsectionintoc {3}{3}{Method: self-induced smoothing}{13}{0}{3}
+\beamer@subsectionintoc {3}{4}{Large-sample Properties}{17}{0}{3}
+\beamer@subsectionintoc {3}{5}{Estimating transformation function}{20}{0}{3}
+\beamer@subsectionintoc {3}{6}{Method}{21}{0}{3}
+\beamer@subsectionintoc {3}{7}{Large-sample properties}{23}{0}{3}
+\beamer@subsectionintoc {3}{8}{Numerical Examples}{25}{0}{3}
+\beamer@sectionintoc {4}{Results}{26}{0}{4}
+\beamer@subsectionintoc {4}{1}{Data Fact}{26}{0}{4}
+\beamer@subsectionintoc {4}{2}{Risk decomposed in Cox-PH model}{27}{0}{4}
+\beamer@subsectionintoc {4}{3}{Prediction by Cox-PH model}{33}{0}{4}
+\beamer@subsectionintoc {4}{4}{Reference}{38}{0}{4}

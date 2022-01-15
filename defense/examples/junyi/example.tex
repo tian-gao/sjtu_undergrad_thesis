@@ -1,0 +1,533 @@
+% Talk at NYU, May 09, 2014
+
+\documentclass{beamer}
+
+\ifx\themename\undefined
+  \def\themename{default}
+\fi
+
+\usetheme{Madrid}
+\usecolortheme{crane}
+%\useoutertheme[footline=authortitle]
+
+\beamertemplatetransparentcovered
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+\graphicspath{{./Figure/}}
+
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\bepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\bX}{\boldsymbol{X}}
+\newcommand{\bI}{\boldsymbol{I}}
+\newcommand{\bY}{\boldsymbol{Y}}
+
+\newcommand{\sgn}{\mathop{\mathrm{sgn}}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{myexample}{Example}
+
+\definecolor{columbia}{rgb}{.155,.127,.877}
+\newcommand{\chcol}{\textcolor{columbia}}
+
+\definecolor{red}{rgb}{.877,.127,.155}
+\newcommand{\chred}{\textcolor{red}}
+
+\definecolor{antired}{rgb}{.123,.395,.482}
+\newcommand{\chanr}{\textcolor{antired}}
+
+%\definecolor{green}{rgb}{.149,.633,.277}
+\definecolor{green}{rgb}{.149,.633,.217}
+\newcommand{\chgrn}{\textcolor{green}}
+
+\title{Estimation of Transformation Model}
+\subtitle{for Mortgage Prepayment Data}
+
+\author{Junyi Zhang}
+\institute[STATS and CIS,Baruch]{Department of STATS and CIS\\ Baruch College}
+\date{Aug $12^{th}$ 2015}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \footnotetext[1]{Joint work with Dr. Ying and Dr. Jin, Columbia Univ., Dr. Shao, NYU, and Mr. Gao.}
+\end{frame}
+
+\frame{\frametitle{Outlines}
+    \begin{itemize}[<.->]
+    \item Single Family Loan-Level Dataset \\~\\
+    \item Cox Proportional Hazard Model for Prepayment Time \\~\\
+    \item Transformation Model   \\~\\
+    \item Self-Induced Smoothing \\~\\
+    \item Results
+    \end{itemize}
+}
+
+\section{Single Family Loan-Level Dataset}
+
+\subsection{Data Structure}
+
+\frame{\frametitle{Data by Freddie Mac}
+    \begin{itemize}[<.->]
+        \item Provided by Freddie Mac \\~\\
+        \item Two groups of data \\~\\
+        \begin{enumerate}
+        \item origination data file: \\note rate, maturity,
+            first payment date, unpaid balance,
+            loan-to-value ratio, loan purpose (purchase/refi)
+            MIP (mortgage insurance),
+            first-time homebuyer flag,
+            credit score (FICO), debt-to-income,
+            occupancy status (own/invest/second),
+            state, postal code \\~\\
+        \item monthly loan performance data filep: \\current UPB,
+        delinquency status, loan age, remaining terms,
+        \chcol{zero balance code}(prepaid/foreclosure/repurchse), MI
+        recoveries, net sales proceeds
+        \end{enumerate}
+    \end{itemize}
+}
+
+\frame{\frametitle{Data by Freddie Mac}
+    \begin{itemize}[<.->]
+        \item Data is split by origination year: \\year vintage 1999 through year vintage 2014 \\~\\
+        \item Missing in the loan performance data: \\first 6 month performance, origination date \\~\\
+        \item Dynamic data:\\ origination data: new mortgage; \\performance data: continuing UPB or becomes zero balance\\~\\
+        \item Performance Cut-off date in the analysis: September 2014 (right censored data).
+    \end{itemize}
+}
+
+\frame{\frametitle{Macro-economic data}
+    \begin{itemize}[<.->]
+        \item Home Price Index: state-wide monthly data by Freddie \\~\\
+        \item Market CMM (constant maturity mortgage) rate by Freddie  \\~\\
+        \item To \chcol{build} major prepayment risk factors:
+        \begin{enumerate}
+        \item Loan-level SATO (spread-at-origin): \\\chcol{Note rate} - \chcol{CMM rate at origination} (origination date is missing) \\~\\
+        \item Loan-level HPI: \\monthly HPI for the corresponding state (time-varying)\\~\\
+        \item Loan-level Financial Incentive: \\current actual unpaid-balance($f($note rate$)$)/refinanced
+        unpaid-balance($f($current market CMM rate$)$).
+        \end{enumerate}
+    \end{itemize}
+}
+
+\frame{\frametitle{Goal of Study}
+    \begin{itemize}[<.->]
+        \item Prepayment risk: a major risk factor in pricing MBS (mortgage backed securities)\\~\\
+        \item Loan-level prepayment risk prediction (multilogit model by Calhoun and Deng 2002)\\~\\
+        \item Decompose the prepayment risk\\~\\
+    \end{itemize}
+}
+
+\section{Cox Proportional Hazard Model}
+
+\frame{\frametitle{Cox PH models}
+    \begin{itemize}[<.->]
+        \item Let $T_i$ be time to prepayment.
+        \item Cox's proportional hazard regression:
+        $$\lambda(T_i=t|X_i)=\lambda_0(t|X_0)\times\exp\{X_i\beta\}$$
+        \item Choosing covariates $X_i = FI_i\times\left[1,SATO_i,FICO_i,LoanSize_i,\right.$\\
+            $\left.LTV_i\times\mbox{I}_{(LTV_i<=80)},
+            LTV_i\times\mbox{I}_{(LTV_i>80)},DTI_i,HPI_i\right]$
+    \end{itemize}
+}
+
+\section{Transformation Model}
+
+\subsection{General class of models}
+
+\frame{\frametitle{Class of semiparametric models}
+    \begin{itemize}[<.->]
+        \item Linear Regression:
+        $$Y_i=X_i'\beta+\epsilon_i$$
+        where $\epsilon_i$ are iid $N(\mu, \sigma^2)$\\~\\
+        \item Drop normality: \\~\\
+        $\epsilon_i$'s are i.i.d. with an \chcol{unknown} distribution. Then
+        $$E(Y|X)=X'\beta.$$
+    \end{itemize}
+}
+
+\frame{\frametitle{Class of semiparametric models}
+    \begin{itemize}[<.->]
+        \item Semiparametric linear transformation model:
+        $$Y_i= \chcol{H}(X_i'\beta+\epsilon_i)$$
+        where \chcol{$H$ is monotone} and \chcol{$\epsilon_i$} are \chcol{iid}
+        with a completely \chcol{specified distribution}. Examples:
+        \renewcommand{\arraystretch}{1.3}
+        \renewcommand{\tabcolsep}{0.22cm}
+        \begin{center}
+        \begin{table}
+            \begin{tabular}{c|c|c}
+            $\epsilon$ & dist. property & Model
+            \\
+            \hline\hline
+            \smallskip
+            extreme value & $\lambda(y|X)=\exp(H^{-1}(y)-X'\beta)$ & Cox's PH \\
+            \smallskip
+            logistic  & $O(y|X)=\exp(H^{-1}(y)-X'\beta)$ & proportional odds \\
+            \end{tabular}
+        \end{table}
+        \end{center}
+        \renewcommand{\arraystretch}{1}
+    \end{itemize}
+}
+
+\frame{\frametitle{Class of semiparametric models}
+    \begin{itemize}[<.->]
+        \item General class of models: \\
+        $$Y_i=\chcol{H\circ F}(X_i'\beta, \chcol{\epsilon_i})$$
+        \begin{enumerate}
+            \item I.I.D. $\epsilon_i$'s.
+            \medskip
+            \item I.I.D. $X_i$'s; and independent with $\epsilon_i$'s.
+            \medskip
+            \item Monotone increasing function $H(\cdot)$.
+            \medskip
+            \item Function $F(\cdot,\cdot)$ is strictly increasing in each of its arguments.
+        \end{enumerate}
+        \medskip
+        \item Model identifiability: assume $\chcol{\beta=(\theta,1)'} \mbox{ and } \chcol{H^{-1}(y_0)=0}$.
+    \end{itemize}
+}
+
+\subsection{Han's MRC estimator}
+\frame{\frametitle{Rank Correlation Function}
+    \begin{itemize}[<.->]
+    \item Define rank correlation (Kendall Tau; \chcol{$(Y_i,X_i'\beta)$})\\~\\
+    \centerline{\chcol{$\displaystyle Q_n(\theta)=\frac{1}{n(n-1)}\sum_{i \neq
+    j}\textrm{I}(Y_i>Y_j)
+    \textrm{I}(X_i'\beta>X_j'\beta).$}}~\\~\\
+    \item Define the MRC estimator (Han, 1987) as\\
+    \medskip
+    \centerline{$\chcol{\displaystyle \beta_n(\theta_n) = \arg\max_{\theta} Q_n(\beta(\theta))}$.}
+    \end{itemize}
+}
+
+\frame{\frametitle{The MRCE's large-sample properties} \label{discon}
+    \begin{itemize}
+        \item Strong consistency: HAN, A.K.(1987), \textit{J. Econometrics}\\~\\
+%        \item Because $\beta_0(\theta_0) = argmax_{R^{d-1}} E\left[G_n(\beta(\theta))\right]$
+        \item $\sqrt{n}$-consistency and normality:  Sherman, R. (1993), \textit{Econometrica}\\~\\
+%        \item Proved by Hoeffding decomposition of 2$^{nd}$-order U-process,\\
+%            \quad\quad\quad\quad\quad negligibility of degenerate 2$^{nd}$-order U-process,\\
+%            \quad\quad\quad\quad\quad and quadratic expansion.
+%        \item Detailed proof included in appendices of project report.
+        \item Asymptotic covariance matrix:\\~\\
+        \begin{itemize}[<.->]
+            \item Asymptotic variance is \chcol{$D_0=A^{-1}V A^{-1}$}, \\
+                \medskip
+                where \chcol{$2A=E\nabla_2 \tau$}, \chcol{$V = E(\nabla_1\tau)^{\otimes2}$} and \\
+            \bigskip
+            \centerline{$\displaystyle \chcol{\tau(y,x,\theta)=
+            E^{y,x}\left[\textrm{I}_{y>Y}\textrm{I}_{(x-X)'\beta>0}+
+                \textrm{I}_{Y>y}\textrm{I}_{(X-x)'\beta>0}\right]}.$}
+        \end{itemize}
+    \end{itemize}
+}
+
+\subsection{Method: self-induced smoothing}
+
+\frame{\frametitle{Difficulties} \label{Diff}
+    \begin{itemize}[<.->]
+        \item Rank correlation is discontinuous in $\theta$.\\~\\
+        \item Possible approaches to estimate $\Sigma_{MRC}$:\\~\\
+        \begin{enumerate}[<.->]
+            \item  Finite difference (Sherman; bandwidth selection problem).\\~\\
+            \item  Boostrap method (Subbotin, 2007; expansive computation).\\~\\
+            \item  Stochastic perturbation (Jin et al., 2001; computation).
+        \end{enumerate}
+    \end{itemize}
+}
+
+\frame{\frametitle{Smoothing Cont'd}
+    \begin{itemize}[<.->]
+    \item Induced smoothing for score functions. (Brown and Wang, 2005)\\~\\
+    \item For $\sqrt{n}$-consistent $\hat\theta$, $\theta-\hat\theta$ is approximately a Gaussian noise \\
+        $Z/\sqrt{n}$ where \chcol{$Z\sim N(0, \Sigma)$} and
+        $\Sigma$ is the limiting covariance matrix of the MRC estimator. \\~\\
+    \item Self-induced smoothing:
+        \begin{itemize}
+        \item Smoothed rank correlation:
+        \chcol{\begin{equation*}
+        \begin{split}
+        \widetilde{Q}_n(\theta)&=E_Z Q_n(\theta+Z/\sqrt{n})\\
+        & =\frac{1}{n(n-1)}\sum_{i\neq j} I[Y_i>Y_j]\Phi\left(\frac{\sqrt{n}X_{ij}'\beta(\theta)}{\sigma_{ij}}\right),
+        \end{split}
+        \end{equation*}}
+        where $X_{ij}=X_i-X_j$, \chcol{$\sigma_{ij}=\sqrt{(X_{ij}^{(1)})'\Sigma X_{ij}^{(1)}}$}.
+        \end{itemize}
+    \end{itemize}
+}
+
+\frame{\frametitle{Smoothing Cont'd}
+    \begin{itemize}[<.->]
+    \item The smoothed MRC estimator: \chcol{$\displaystyle \widetilde{\theta}_n = \arg\max_{\theta} \widetilde{Q}_n(\theta)$}.
+    \medskip
+    \item Variance estimator: \chcol{$\widehat{D}_n(\theta,\Sigma) =
+    \widehat{A}^{-1}_n(\theta,\Sigma)\widehat{V}_n(\theta,\Sigma)\widehat{A}^{-1}_n(\theta,\Sigma)$}, where
+
+    \begin{equation*}
+    \widehat{A}_n(\theta,\Sigma)
+    =\frac{1}{2n(n-1)}\sum_{i \neq j}\left\{ \chcol{H_{ij}\dot{\phi}\left(\frac{\sqrt{n}X_{ij}'\beta}{\sigma_{ij}}\right)
+    \left[\frac{\sqrt{n}X_{ij}^{(1)}}{\sigma_{ij}}\right]^{\otimes2}}\right\},
+    \end{equation*}
+    and
+    \begin{equation*}
+    \begin{split}
+    \widehat{V}_n(\theta, \Sigma)
+    &=\frac{1}{n^3}\sum_{i=1}^n\left\{\sum_{j} \left[\chcol{H_{ij}\phi(\frac{\sqrt{n}X_{ij}'\beta}{\sigma_{ij}})
+    \frac{\sqrt{n}X_{ij}^{(1)}}{\sigma_{ij}}}\right]\right\}^{\otimes2}.
+    \end{split}
+    \end{equation*}
+    Here $H_{ij}=\sgn(Y_i-Y_j)$, and $\dot{\phi}(z)=-z\phi(z)$.
+    \end{itemize}
+}
+
+\frame{\frametitle{Iterative algorithm}
+    \begin{itemize}[<.->]
+    \item The limiting covariance matrix \chcol{$\Sigma$} is unknown in \chcol{$\hat{D}_n(\theta,\Sigma)$}.\\~\\
+    \item An iterative algorithm: \\~\\
+    \begin{enumerate}[<.->]{\leftmargin=-1em}
+    \item Compute the MRC estimator \chcol{$\hat{\theta}_n$} and
+    set \chcol{$\hat\Sigma^{(0)}$} to be the \chcol{identity} matrix.\\~\\
+
+    \item Update variance-covariance matrix \chcol{$\hat{\Sigma}_n^{(k)}=\hat{D}_n(\hat{\theta}_n,\hat{\Sigma}_n^{(k-1)})$}.\\
+    Smooth the rank correlation \chcol{$Q_n(\theta)$} using covariance matrix \chcol{$\hat{\Sigma}_n^{(k)}$}.\\
+    Maximize the resulting smoothed rank correlation to get an estimator \chcol{$\hat{\theta}_n^{(k)}$}.\\~\\
+
+    \item Repeat step 2 until \chcol{$\hat{\theta}_n^{(k)}$} converge.
+    \end{enumerate}
+    \end{itemize}
+}
+
+\subsection{Large-sample Properties}
+
+\frame{\frametitle{Asymptotic Equivalency}
+
+\begin{theorem}
+  For any positive definite matrix \chcol{$\Sigma$}, under certain regularity conditions,
+  the smoothed MRC estimator $\widetilde\theta_n$ is \chcol{consistent},
+\chcol{$\widetilde\theta_n\to \theta_0$ a.s.}, and \\ \chcol{asymptotically normal},
+\chcol{$$\sqrt{n}(\widetilde\theta_n-\theta_0)
+\Rightarrow N(0, A^{-1}VA^{-1}).$$}
+In addition, the SMRCE $\widetilde\theta_n$ is asymptotically equivalent to the \\
+MRCE $\hat{\theta}_n$ in the sense that
+\chcol{$$ \widetilde\theta_n = \hat{\theta}_n +o_p(n^{-1/2}).$$}
+\end{theorem}
+}
+
+\frame{\frametitle{Consistent Variance Estimator}\label{Variance}
+    \begin{theorem}
+    For any positive definite matrix $\Sigma$,
+    the variance estimator \chcol{$\hat{ D}_n(\hat{\theta}_n,\Sigma)$} converges in probability to \chcol{$D_0$},
+    the limiting variance-covariance matrix of the MRC estimator \chcol{$\hat{\theta}_n$}.
+    \end{theorem}
+}
+
+\frame{\frametitle{Algorithm Convergence}
+
+\begin{theorem}
+Let \chcol{$\hat\Sigma_n^{(k)}$} be defined as in the iterative algorithm.
+Under certain regularity conditions, there exist \chcol{$\Sigma^*_n$}, $n\geq1$, such that
+for any \chcol{$\epsilon>0$}, there exists $N$, such that
+for all \chcol{$n>N$},
+\chcol{\[P(\lim_{k\to\infty} \hat{\Sigma}_n^{(k)}=\Sigma^*_n, \ \ \|\Sigma_n^*-D_0\|<\epsilon)
+>1-\epsilon.\]}
+\end{theorem}
+}
+
+\subsection{Estimating transformation function}
+
+\frame{\frametitle{Model and Chen's Method}
+    \begin{itemize}[<.->]
+        \item An equivalent transformation model ($\Lambda$ is strictly monotone): \\
+        $$\chcol{\Lambda}(Y_i)=X_i'\beta+\chcol{\epsilon_i}$$
+        \item Chen's (2002) rank-based estimate:\\
+        \chcol{\begin{equation*}
+        Q_n^{\Lambda}(y,\Lambda,b) = \frac{1}{n(n-1)}\sum_{i\neq j} (d_{iy}-d_{jy_0})I[X_i'b-X_j'b\geq \Lambda],
+        \end{equation*}}
+        where \chcol{$d_{iy}=I[Y_i\leq y]=I[X_i'\beta+\epsilon_i\leq\Lambda_0(y)]$}.~\\
+        Define\\
+        \chcol{\begin{equation*}
+        \hat{\Lambda}_n(y)={\arg\max}_{\Lambda\in M_{\Lambda}} Q_n^{\Lambda}(y,\Lambda,b_n)
+        \end{equation*}}
+        for any given \chcol{$y \in [y_2,y_1]$}, where
+        $b_n$ is the $\sqrt{n}$-consistent estimator for $\beta$, for example, Han's \chcol{MRC estimator}.
+    \end{itemize}
+}
+
+\subsection{Method}
+\frame{\frametitle{Smoothing}
+    \begin{itemize}[<.->]
+        \item The smoothed rank correlation function:\\
+        \chcol{\begin{equation*}
+        \tilde{Q}_n^{\Lambda}(y,\Lambda,b) = \frac{1}{n(n-1)}\sum_{i\neq j}
+        (d_{iy}-d_{jy_0})\Phi\left(\sqrt{n}(X_{ij}'b-\Lambda)\right).
+        \end{equation*}}~\\
+        \item Define the smoothed rank estimator\\
+        \chcol{\begin{equation*}
+        \tilde{\Lambda}_n(y)={\arg\max}_{\Lambda\in M_{\Lambda}}
+            \tilde{Q}_n^{\Lambda}(y,\Lambda,b_n)
+        \end{equation*}}
+        for any given \chcol{$y \in [y_2,y_1]$}.
+    \end{itemize}
+}
+
+\frame{\frametitle{Covariance function}
+    \begin{itemize}[<.->]
+        \item Define
+\begin{equation*}
+\begin{split}
+\chcol{\hat{V}_n^{\Lambda}(y,y',\Lambda,b)}=\frac{1}{n^3}\sum_{i=1}^n
+& \Bigg\{\sum_j \bigg\{n
+(d_{iy}-d_{jy_0})(d_{iy'}-d_{jy_0})\bigg.\Bigg.\\
+&\Bigg.\bigg.
+\phi\left(\sqrt{n}(X_{ij}'b-\Lambda(y))\right)
+\phi\left(\sqrt{n}(X_{ij}'b-\Lambda(y'))\right)
+\bigg\}\Bigg\}
+\end{split}
+\end{equation*}
+        \item Define
+\begin{equation*}
+\chcol{\hat{A}_n^{\Lambda}(y,\Lambda,b)}=\frac{1}{2n(n-1)}\sum_{i \neq j}
+\left\{n
+(d_{iy}-d_{jy_0})\dot{\phi}\left(\sqrt{n}(X_{ij}'b-\Lambda(y))\right)
+\right\},
+\end{equation*}
+    \item Define
+\begin{equation*}\label{eqn: covariance formula}
+\chcol{\hat{D}_n^{\Lambda}(y,y',\Lambda,b)} = \left[\hat{A}_n^{\Lambda}(y,\Lambda,b)\right]^{-1}
+\hat{V}_n^{\Lambda}(y,y',\Lambda,b)
+\left[\hat{A}_n^{\Lambda}(y',\Lambda(y'),b)\right]^{-1}.
+\end{equation*}
+    \end{itemize}
+}
+
+\subsection{Large-sample properties}
+
+\frame{\frametitle{Large-sample properties}
+    \begin{theorem}
+Under certain regularity conditions,\\~\\
+(i) \chcol{$\sup_{y_2\leq y\leq y_1}
+|\tilde{\Lambda}_n(y)-\Lambda_0(y)| = o_p(1)$}; \\~\\
+(ii) Uniformly over $y\in[y_2,y_1]$,
+\chcol{\begin{equation*}
+\sqrt{n}(\tilde{\Lambda}_n(y)-\Lambda_0(y)) \Rightarrow H_{\Lambda}(y_0,y)
+\end{equation*}}
+where \chcol{$H_{\Lambda}(y_0,y)$} is a Gaussian process with mean 0 and a covariance function
+\chcol{$\Gamma^{\Lambda}(y,y';y_0)$}.\\~\\
+(iii) The limiting Gaussian process for \chcol{$\sqrt{n}(\tilde{\Lambda}_n(y)-\Lambda_0(y))$}
+is the same as that for \chcol{$\sqrt{n}(\hat{\Lambda}_n(y)-\Lambda_0(y))$}.
+    \end{theorem}
+}
+
+\frame{\frametitle{Large-sample properties, Cont'd}
+    \begin{theorem}
+Under certain regularity conditions,
+The covariance estimate \chcol{$\hat{D}_n^{\Lambda}(y,y',\tilde{\Lambda}_n,b_n)$}
+converges in probability to the limiting covariance function
+\chcol{$\Gamma^{\Lambda}(y,y';y_0)$} uniformly over
+\chcol{$\left\{(y,y'): \right.$ $\left.y\in[y_2,y_1],y'\in[y_2,y_1]\right\}$}.
+    \end{theorem}
+}
+
+\subsection{Numerical Examples}
+
+\begin{frame}
+  \frametitle{Examples}
+  \framesubtitle{Estimating the transformation}
+  \begin{figure}[h]
+  \begin{tabular}{cc}
+  \includegraphics[width=2.1in]{Exponential.jpg} &
+  \includegraphics[width=2.1in]{Logarithm.jpg} \\
+  \includegraphics[width=2.1in]{Logistic.jpg} &
+  \includegraphics[width=2.1in]{Mixed.jpg}
+  \end{tabular}
+  \end{figure}
+\end{frame}
+
+\section{Results}
+
+\subsection{Data Fact}
+
+\frame{\frametitle{Data fact}
+    \begin{itemize}
+    \item Fitting period: originated in 2008-2013. \\~\\
+    \item More than 5 millions mortgages. \\~\\
+    \item Censoring rate is about $50\%$.
+    \end{itemize}
+}
+
+\subsection{Risk decomposed in Cox-PH model}
+
+\frame{\frametitle{SATO}
+\begin{center}\includegraphics[width=4in]{sato.pdf}\end{center}
+}
+
+\frame{\frametitle{FICO}
+\begin{center}\includegraphics[width=4in]{fico.pdf}\end{center}
+}
+
+\frame{\frametitle{LTV}
+\begin{center}\includegraphics[width=4in]{ltv.pdf}\end{center}
+}
+
+\frame{\frametitle{DTI}
+\begin{center}\includegraphics[width=4in]{dti.pdf}\end{center}
+}
+
+\frame{\frametitle{HPI}
+\begin{center}\includegraphics[width=4in]{hpi.pdf}\end{center}
+}
+
+\frame{\frametitle{FI}
+\begin{center}\includegraphics[width=4in]{fi.pdf}\end{center}
+}
+
+\subsection{Prediction by Cox-PH model}
+
+\frame{\frametitle{Origination Year 2008}
+\begin{center}\includegraphics[width=4in]{2008.pdf}\end{center}
+}
+
+\frame{\frametitle{Origination Year 2009}
+\begin{center}\includegraphics[width=4in]{2009.pdf}\end{center}
+}
+
+\frame{\frametitle{Origination Year 2010}
+\begin{center}\includegraphics[width=4in]{2010.pdf}\end{center}
+}
+
+\frame{\frametitle{Origination Year 2011}
+\begin{center}\includegraphics[width=4in]{2011.pdf}\end{center}
+}
+
+\frame{\frametitle{Origination Year 2012}
+\begin{center}\includegraphics[width=4in]{2012.pdf}\end{center}
+}
+
+\subsection{Reference}
+\frame{\frametitle{Reference}
+    \begin{itemize}
+        \item \textsc{Han, A. K.} (1987). Non-parametric analysis of a generalized
+regression model. {\it J. Econometrics}, {\bf 35}, 303-316.
+
+
+        \item \textsc{Sherman, R. P.} (1993). The limit distribution of the maximum
+rank correlation estimator. {\it Econometrica}, {\bf 61}
+123-137.
+
+        \item \textsc{Khan, S., Tamer, E.} (2007).  Partial rank estimation of duration models with general forms of censoring.
+{\it J. Econometrics}, {\bf 136}, 251-280.
+
+        \item \textsc{ Brown, B. M. and Wang, Y. }(2005) Standard errors and
+covariance matrices for smoothed rank estimators. {\it Biometrika}, {\bf 92}, 149-158.
+
+        \item \textsc{Jin, Z., Ying, Z., Wei L. J.} (2001). A simple resampling method by perturbing the minimand.
+{\it Biometrika}, {\bf 88}, 381-390.
+    \end{itemize}
+}
+
+\end{document}

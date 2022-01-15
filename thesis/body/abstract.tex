@@ -1,0 +1,78 @@
+% !TEX encoding = UTF-8 Unicode
+%%==================================================
+%% abstract.tex for SJTU Bachelor Thesis
+%% version: 0.5.2
+%% Encoding: UTF-8
+%%==================================================
+
+\begin{abstract}
+\begin{spacing}{1.2}
+在量化金融领域，针对股票收益率序列的研究与分析是业界与学术界共同最关心的研究方向之一。
+股票收益率的分布通常具有尖峰厚尾的性质，而在不同的市场环境下，收益率分布的参数大相径庭。
+为了定量刻画这种收益率的市场状态依赖性，学者们建立了许多模型，隐马尔科夫模型则是其中较为重要的一种。
+
+在本文中，我们首先对隐马尔科夫模型的定义及构成、主要统计量以及参数方法给出了详尽的介绍。
+本文的独创性贡献在于，我们在传统模型参数期望最大化算法、以及全局解码的维特比算法的基础上，
+综合了数据预处理、K均值聚类算法等技术，搭建了一个完整的股票收益率序列预测及市场历史隐状态分析的系统。
+该系统完整封装了数据预处理、模型初始化、参数估计及模型校准、隐状态解码及分析、收益率序列预测以及数值结果输出等环节，
+且适用于一般的股票市场。
+我们利用\texttt{Python}编程对系统进行了实现，
+并且利用这一系统对中国股票市场的沪深300指数及美国股票市场的标准普尔500指数进行了详尽的实证分析与模型检验，
+完整地分析与对比了数值结果，并用\texttt{R-ggplot2}进行了可视化呈现。
+市场历史隐藏状态的分析结果符合一般认知，且系统在自适应收益率序列预测中有较好的表现。
+特别地，我们针对沪深300指数不同观测频率的数据作了进一步分析与对比，
+发现更长时间段数据的隐藏状态分析结果更准确，而更高频率数据的预测正确率更高。
+
+此外，我们对模型构建及实证分析中的遗留问题也进行了更深入的探讨，并提出了潜在的解决方法，如指数加权期望最大化算法。
+我们还简要介绍了更一般化的隐马尔科夫模型，并引入了模型参数估计的粒子滤波方法，以期在未来的研究工作中加以解决。
+
+\end{spacing}
+\keywords{隐马尔科夫模型，股票收益率预测，期望最大化算法，维特比算法，K均值聚类，粒子滤波}
+\end{abstract}
+
+\setlength\parindent{0pt}
+\begin{englishabstract}
+In the area of quantitative finance,
+research and analysis on stock return series is one of the most concentrated topics 
+shared by both the industry and the academia.
+Distributions of stock returns usually present leptokurtosis and fat-tail.
+Parameters of these distributions, however, vary largely under different market states.
+Therefore, a lot of models have been proposed by scholars to 
+quantitatively depict the market state dependency of stock returns,
+of which the hidden Markov model is a very important one.
+
+In this thesis, we firstly provide analyses with details on 
+the definition and formulation of the hidden Markov model,
+primary statistics, and methods to estimate the model parameters.
+The original contribution of the thesis is that,
+based on traditional expectation maximization algorithm for model estimation and 
+Viterbi algorithm for global decoding,
+we combine the data-preprocessing and K-Means clustering techniques,
+in order to construct a complete system for stock return series prediction and 
+historical market hidden states analysis.
+The system thoroughly encapsulates the modules of data-preprocessing, 
+model initialization, parameters estimation and model calibration, 
+hidden states decoding and analysis, return series prediction and results output,
+and it well applies to general stock markets.
+We accomplish the system realization through \texttt{Python} programming,
+and implement the system to perform empirical analyses and model validation 
+on the CSI 300 Index from Chinese stock market and the S\&P 500 Index from the U.S. stock market.
+We conduct thorough analyses and comparisons on the numerical results,
+along with presentations of results visualization through \texttt{R-ggplot2}.
+The results of market historical hidden states analyses match common acknowledgements,
+and the system performs well in adaptive stock return series predictions.
+Specifically, we further carry out analyses and comparisons on 
+CSI 300 data with different observation frequency,
+finding that hidden states analyses are more accurate with data of longer observation periods
+and predictions have higher correctness with data of higher observation frequencies.
+
+Additionally, we provide further discussions on unaddressed issues remained 
+in the model construction part and empirical analysis part,
+and propose some potential solutions like exponentially weighted expectation maximization algorithm.
+We also briefly introduce the more general hidden Markov models,
+and the particle filter method for model estimation.
+We hope to solve the problems and do further researches in future works.
+
+\englishkeywords{hidden Markov model, stock return prediction, 
+expectation maximization, Viterbi algorithm, K-Means clustering, particle filter}
+\end{englishabstract}

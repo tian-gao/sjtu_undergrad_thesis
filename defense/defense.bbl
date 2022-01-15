@@ -1,0 +1,56 @@
+\begin{thebibliography}{8}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Hasselblad(1969)]{Hasselblad:1969bk}
+\textsc{Hasselblad V}.
+\newblock {Estimation of Finite Mixtures of Distributions from the Exponential
+  Family}[J].
+\newblock Journal of the American Statistical Association, 1969,
+  64(328):1459--1471.
+
+\bibitem[Behboodian(1970)]{Behboodian:1970hh}
+\textsc{Behboodian J}.
+\newblock {On the Modes of a Mixture of Two Normal Distributions}[J].
+\newblock Technometrics, 1970, 12(1):131--139.
+
+\bibitem[Forgy(1965)]{Forgy:1965cl}
+\textsc{Forgy E~W}.
+\newblock Cluster analysis of multivariate data: efficiency versus
+  interpretability of classifications[J].
+\newblock Biometrics, 1965, 21:768--769.
+
+\bibitem[Zucchini and MacDonald(2009)]{Zucchini:2009df}
+\textsc{Zucchini W, MacDonald I~L}.
+\newblock
+\newblock {Hidden Markov models for time series}[M],
+\newblock Monographs on Statistics and Applied Probability, vol. 110.[S.l.]:
+  CRC Press, Boca Raton, FL, 2009.
+
+\bibitem[Baum and Petrie(1966)]{Baum:1966cy}
+\textsc{Baum L~E, Petrie T}.
+\newblock {Statistical inference for probabilistic functions of finite state
+  Markov chains}[J].
+\newblock Annals of Mathematical Statistics, 1966, 37(6):1554--1563.
+
+\bibitem[Baum and Eagon(1967)]{Baum:1967gs}
+\textsc{Baum L~E, Eagon J~A}.
+\newblock {An inequality with applications to statistical estimation for
+  probabilistic functions of Markov processes and to a model for ecology}[J].
+\newblock Bulletin of the American Mathematical Society, 1967, 73(3):360--363.
+
+\bibitem[Baum et al.(1970)]{Baum:1970do}
+\textsc{Baum L~E, Petrie T, Soules G}, et al.
+\newblock {A maximization technique occurring in the statistical analysis of
+  probabilistic functions of Markov chains}[J].
+\newblock Annals of Mathematical Statistics, 1970, 41(1):164--171.
+
+\bibitem[Zhang(2004)]{Zhang:2005tp}
+\textsc{Zhang Y}.
+\newblock {Prediction of financial time series with Hidden Markov Models}[J].
+\newblock 2004.
+
+\end{thebibliography}

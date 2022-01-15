@@ -1,0 +1,235 @@
+% !TEX encoding = UTF-8 Unicode
+%%==================================================
+%% thanks.tex for SJTU Bachelor Thesis
+%% version: 0.5.2
+%% Encoding: UTF-8
+%%==================================================
+
+\chapter{Future work}
+\label{chap:future}
+
+In the final chapter, 
+we briefly talk about some remaining issues mentioned in the previous chapters
+and potential directions for future research.
+In Sec.\,\ref{sec:future:lag} we discuss about the time lag effect that has been mentioned
+multiple times in Ch.\,\ref{chap:positive},
+and we propose some (possibly) feasible solutions to the problem.
+In Sec.\,\ref{sec:future:PF} we introduce particle filters,
+which is currently a preferred method for HMM estimations \cite{Jacob:2015um}.
+We address these issues here merely for the reader's information,
+and we hope to deal with them in future works.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Dealing with time lags}
+\label{sec:future:lag}
+As we stated in Conjecture \ref{conj:lag},
+incorporation of too much out-dated information leads to large prediction errors,
+and the results worsen as time goes by,
+i.e.\,with the iterative (loops of out-of-sample data) predictions process.
+
+The essential issue embedded in the problem is that all data sample take up equal weight
+when they are used to fit the model.
+The latest data point has the same significance as the one from a year ago,
+which is intuitively problematic.
+Therefore, reweighting of the sample observations are necessary to deal with the time lag effect.
+
+We introduce two different ways in this section.
+The first one described in Sec.\,\ref{sec:future:lag:rolling} implements a rolling window,
+which makes cut-off of the data that are too old.
+This method is mostly used in industries due to its simplicity and flexibility.
+The second one presented in Sec.\,\ref{sec:future:lag:EWEM}, more popular in academia,
+is the exponentially weighted EM algorithm.
+The algorithm remains all sample data from the population,
+and the only difference with the traditional EM is that the sample observations are reweighted.
+
+
+\subsection{Prediction with rolling windows}
+\label{sec:future:lag:rolling}
+The rolling window method,
+as is indicated from the name itself,
+refers to the idea that the data sample (set) is updated with arrival of new observations
+while the size of the sample remain the same.
+Eq.\,\ref{eq:future:rolling} shows the dynamic process of data set changing.
+		\begin{equation}
+		\label{eq:future:rolling}
+		\dots,\rlap{$\underbrace{\phantom{x_{t-l+1},x_{t-l+2},\dots,x_{t-1},x_{t}}}_{\text{sample}_{t}}$}
+		x_{t-l+1},\overbrace{x_{t-l+2},\dots,x_{t-1},x_{t},x_{t+1}}^{\text{sample}_{t+1}},\dots
+		\end{equation}
+
+Every time when the system processes to the next loop,
+the first (in time) sample point is discarded and the newly come observation is included,
+and the length of observation series used to fit model remains $l$.
+Simply put, we cut the tail of the data sample whenever a new observation is made.
+Essentially the rolling window is a reweighting method,
+only the weight for all out-dated observations are arbitrarily zero
+and ones remained in the sample are equally weighted.
+
+Due to its easiness to implement,
+the rolling window method is commonly used in real-world financial analysis.
+The only changeable parameter in the method is the size of the sample.
+Usually the parameter is chosen to have some realistic meanings,
+e.g.\,for analysis on daily return data,
+$l$ is usually chosen as $5,10,21,63$, 
+which separately stands for a week, half-month, a month and three months,
+counting in trading days.
+Optimization within the small pool helps us to find a (relatively) good choice of the parameter,
+meanwhile reduces the risk of over-fitting.
+
+
+\subsection{Exponentially weighted EM algorithm}
+\label{sec:future:lag:EWEM}
+Considering the change of importance over the time,
+a few weighting methods are created based on the moving average (MA) concept.
+The methods are then adopted beyond MA and used along with many other techniques,
+e.g.\,the EM algorithm.
+
+The exponentially weighted expectation maximization (EWEM) algorithm,
+inspired by the idea of exponentially weighted moving average (EWMA),
+performs reweighting of the sample observations.
+
+Recall Eq.\,\ref{eq:HMM:EM:CDLL} and we rewrite the iteratively maximization problem
+in form of function of the parameter $\btheta$:
+		\begin{equation}
+		\label{eq:future:CDLL}
+		Q(\btheta,\btheta^{(i-1)}) = E \left[ \log p(\bx,\bs \mid \btheta)
+			\mid \bx,\btheta^{(i-1)} \right],
+		\end{equation}
+and we shall introduce a time-dependent weight $\eta$ into Eq.\,\ref{eq:future:CDLL}:
+		\begin{equation}
+		\label{eq:future:CDLL:time}
+		\begin{aligned}
+		\hat{Q}(\btheta,\btheta^{(i-1)}) & = E\left[\log\eta p(\bx,\bs \mid \btheta) 
+			\mid \bx,\btheta^{(i-1)} \right] \\
+		& = E\left[\eta\log p(\bx,\bs \mid \btheta) \mid \bx,\btheta^{(i-1)} \right] \\
+		& = \sum_{s \in \hs}\eta\log p(\bx,s \mid \btheta) p(s \mid \bx,\btheta^{(i-1)})
+		\end{aligned}
+		\end{equation}
+
+The full description and analysis of the method 
+(including definition, implementation, convergence result, etc.)
+is explained in details in \cite{Zhang:2005tp},
+and we do not provide further steps here.
+The two equations above are enough for the introduction to the general idea.
+
+The EWEM algorithm is more complex than the rolling window method and 
+much more difficult to add to the traditional EM algorithm,
+thus it is mostly discussed about in academia while seldom implemented for industrial research.
+Yet the idea is very enlightening and 
+we hope to study further on the sample reweighting of HMM in the future.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Particle filters}
+\label{sec:future:PF}
+Particle filters (PF) are also known as sequential Monte Carlo (SMC) methods,
+which is a set of genetic-type particle Monte Carlo methodologies 
+to solve the filtering problem \cite{wiki:PF},
+and is firstly proposed in \cite{DelMoral:1997dp, Liu:1998fp}.
+
+Firstly we re-formulate the HMM problem in a uniform way:
+		\begin{subequations}
+		\begin{align}
+		\bx_n & = m_n(\bs_n,\epsilon_n), \\
+		\bs_n & = h_n(\bs_{n-1},\eta_n),
+		\end{align}
+		\end{subequations}
+where $\bx$ is the observed variable (vector) and $\bs$ the state variable (vector).
+In previous chapters,
+we redeem that both $\bs$ and $\bx$ are discrete and $\bs$ is even categorical,
+while they may be continuous, discrete or even combined of the two \cite{Creal:2012ct}.
+The functions $m_n$ and $h_n$ are very likely to be nonlinear and with unknown forms.
+
+Similar to before, we write some important statistics as follows:
+		\begin{itemize}
+		\item joint smoothing distribution
+			\begin{equation}
+			\label{eq:PF:smoothing}
+			p(\bs_{0:n} \mid \bx_{1:n};\theta) = \frac{p(\bs_{0:n},\bx_{1:n};\theta)}{p(\bx_{1:n};\theta)};
+			\end{equation}
+		\item transition density
+			\begin{equation}
+			\label{eq:PF:transition}
+			p(\bs_n \mid \bx_{1:n-1};\theta) = \int p(\bs_n \mid \bs_{n-1};\theta)
+				p(\bs_{n-1} \mid \bx_{1:n-1};\theta)\ d\bs_{n-1};
+			\end{equation}
+		\item filtering distribution
+			\begin{equation}
+			\label{eq:PF:filtering}
+			\begin{aligned}
+			p(\bs_n \mid \bx_{1:n};\theta) & = 
+				\frac{p(\bx_n,\bs_n \mid \bx_{1:n-1};\theta)}{p(\bx_n \mid \bx_{1:n-1};\theta)} \\
+			& = \frac{p(\bx_n \mid \bs_n;\theta)p(\bs_n \mid \bx_{1:n-1};\theta)}
+				{\int p(\bx_n \mid \bs_n;\theta)p(\bs_n \mid \bx_{1:n-1};\theta)\ d\bx_n};
+			\end{aligned}
+			\end{equation}
+		\item forecast distribution
+			\begin{equation}
+			\label{eq:PF:forecast}
+			p(\bx_n \mid \bx_{1:n-1};\theta) = \int p(\bx_n \mid \bs_n;\theta)
+				p(\bs_n \mid \bx_{1:n-1};\theta)\ d\bx_n;
+			\end{equation}
+		\end{itemize}
+where $theta$ is the set of model parameters.
+In order to estimate the probabilities and integrals,
+we can implement the Monte Carlo (MC) methodologies,
+which are simulation-based techniques to find estimates of them.
+
+The reason we introduce the approximation method is that
+analytic solutions to model estimation only exist for specific models,
+such as discrete and categorical latent variable models (as in our case)
+and linear-Gaussian observed variable models like Kalman Filter.
+
+Variance reduction techniques are necessary for MC in order to 
+accelerate the convergence and relieve the computational burden.
+Importance sampling (IS) is one of the most commonly implemented method.
+The method is proposed in \cite{Kahn:1953me,Marshall:1954us}.
+It generates random particles from a importance (or proposal, or biased) distribution
+and reweighting the samples to have the unbiased estimates of integrals.
+Search for the importance distribution is, however, not easy.
+Several methods have been proposed, 
+e.g.\,efficient importance sampling in \cite{Richard:2007gz} and
+cross-entropy (CE) method \cite{Rubinstein:2013ce,Gao:2015vv},
+which minimizes the Kullback-Leibler divergence (KLD).
+The methods have not been applied to HMM problems yet and we consider them very potential.
+
+Computational cost is high to adopt standard IS in HMM problems,
+thus sequential importance sampling (SIS) method has been proposed to 
+draw random particles from a sequence of conditional distributions.
+Furthermore, resampling algorithms are also incorporated in SIS and the new
+sequential importance sampling with resampling (SISR) algorithm
+mitigates the degeneracy problem so that the method shall
+function much more efficient than the former one, see \cite{Rubin:1987co,Gordon:1993up}.
+With the methods above, 
+PF is largely implemented to solve HMM problems and has become a standard tool for them.
+
+As for our problem,
+it is possible to further modify our problem formulation and then 
+solve the more complex problem with PF.
+For example,
+at present we assume the hidden states to be discrete, categorical and finite.
+We can view the conditional distribution parameters as our latent variable 
+and solve directly for them under certain assumptions,
+such as certain function forms:
+		\begin{equation}
+		\label{eq:future:latent}
+		\bs_t = (\mu_t,\sigma_t) = \left \{ 
+		\begin{array}{l}
+		\mu_t \sim \text{ARMA}(p,q), \\
+		\sigma_t \sim \text{GARCH}(m,n). \\
+		\end{array}
+		\right.
+		\end{equation}
+We propose the equation above only to offer some possible ideas.
+It remains to be examined whether Eq.\,\ref{eq:future:latent} is feasible for the problem.
+
+Besides PF, there are also some other more advanced methods to solve for HMM problems,
+e.g.\,approximate Bayesian computation (ABC) method \cite{Toni:2009abc,Dean:2014pe},
+an exact, online and plug and play method based on PF named SMC$^2$ \cite{Jacob:2015um}.
+The topic is quite beyond the scope of this thesis and we do not make further discussions here.
+
+
+
+
+
+

@@ -1,0 +1,152 @@
+% !TEX encoding = UTF-8 Unicode
+\documentclass[a4paper,12pt, oneside]{sjtuthesis}
+
+\usepackage{datetime}
+\usepackage{setspace}
+\linespread{1.6}
+\graphicspath{{figs/}}
+
+% Calligraphic Fonts 
+\newcommand{\ca}{{\cal A}}
+\newcommand{\cb}{{\cal B}}
+\newcommand{\cc}{{\cal C}}
+\newcommand{\cd}{{\cal D}}
+\newcommand{\ce}{{\cal E}}
+\newcommand{\cf}{{\cal F}}
+\newcommand{\ch}{{\cal H}}
+\newcommand{\cl}{{\cal L}}
+\newcommand{\cm}{{\cal M}}
+\newcommand{\co}{{\cal O}}
+\newcommand{\cp}{{\cal P}}
+\newcommand{\ct}{{\cal T}}
+\newcommand{\cz}{{\cal Z}}
+
+% Bold Fonts
+\newcommand{\one}{{\mathbf{1}^{\prime}}}
+\newcommand{\bu}{{\mathbf u}}
+\newcommand{\bx}{{\mathbf x}}
+\newcommand{\bX}{{\mathbf X}}
+\newcommand{\bn}{{\mathbf N}}
+\newcommand{\bo}{{\mathbf O}}
+\newcommand{\bp}{{\mathbf P}}
+\newcommand{\br}{{\mathbf R}}
+\newcommand{\bs}{{\mathbf s}}
+\newcommand{\bS}{{\mathbf S}}
+\newcommand{\bz}{{\mathbf Z}}
+\newcommand{\balpha}{{\boldsymbol\alpha}}
+\newcommand{\bbeta}{{\boldsymbol\beta}}
+\newcommand{\bdelta}{{\boldsymbol\delta}}
+\newcommand{\bpi}{{\boldsymbol\pi}}
+\newcommand{\bmu}{{\boldsymbol\mu}}
+\newcommand{\bsigma}{{\boldsymbol\sigma}}
+\newcommand{\btheta}{{\boldsymbol\theta}}
+\newcommand{\bGamma}{{\boldsymbol\Gamma}}
+
+% Hollow Fonts
+\newcommand{\expe}{{\mathbb E}}
+\newcommand{\hn}{{\mathbb N}}
+\newcommand{\bbt}{{\mathbb T}}
+\newcommand{\hs}{{\mathbb S}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\LRa}{\Longrightarrow}
+\newcommand{\LLa}{\Longleftarrow}
+
+% Operators
+\DeclareMathOperator*{\argmax}{argmax}
+\newcommand{\ov}{\overline}
+\providecommand{\abs}[1]{\lvert#1\rvert}
+\providecommand{\norm}[1]{\lVert#1\rVert}
+\providecommand{\prob}[1]{\mathbb{P}(#1)}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{基于隐马尔科夫模型的股票收益率序列预测分析}
+\author{高\quad{}天}
+\advisor{林建忠}
+\degree{理学学士}
+\defenddate{2016年6月1日}
+\school{上海交通大学}
+\institute{数学科学学院}
+\studentnumber{5120719083}
+\major{数学与应用数学\par（数学金融本硕贯通班）}
+
+\englishtitle{Prediction of stock return series with \par hidden Markov models}
+\englishauthor{\textsc{Tian Gao}}
+\englishadvisor{Associate Professor \textsc{Jianzhong Lin}}
+\englishschool{Shanghai Jiao Tong University}
+\englishinstitute{\textsc{School of Mathematical Sciences} \\
+  \textsc{Shanghai Jiao Tong University} \\
+  \textsc{Shanghai, P.R.China}}
+\englishdegree{Bachelor}
+\englishmajor{Mathematics and Applied Mathematics (Mathematics-Finance Class)}
+\englishdate{\shortmonthname.\,\number\day, \number\year}
+
+\maketitle
+
+\makeenglishtitle
+
+% 论文原创性声明和使用授权
+\makeDeclareOriginal
+\makeDeclareAuthorization
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frontmatter
+
+\include{body/abstract}
+
+\begin{spacing}{1.1}
+\tableofcontents
+\listoffigures
+\listoftables
+\end{spacing}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mainmatter
+
+\include{body/chapter01}
+\include{body/chapter02}
+\include{body/chapter03}
+\include{body/chapter04}
+\include{body/chapter05}
+\include{body/chapter06}
+\include{body/chapter07}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+\renewcommand\theequation{\Alph{chapter}--\arabic{equation}}
+\renewcommand\thefigure{\Alph{chapter}--\arabic{figure}}
+\renewcommand\thetable{\Alph{chapter}--\arabic{table}}
+
+\include{app/fig}
+\include{app/code}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\backmatter
+
+\begin{spacing}{1.1}
+\bibliography{ref/ref}
+\end{spacing}
+
+\include{body/ack}
+
+% 发表文章目录
+%\include{body/pub}
+% 参与项目列表
+%\include{body/projects}
+
+%\include{body/bigabstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
